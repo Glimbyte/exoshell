@@ -6,40 +6,47 @@
 #    By: mfujimak <mfujimak@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/09/14 18:00:19 by mfujimak          #+#    #+#              #
-#    Updated: 2023/09/14 18:13:38 by mfujimak         ###   ########.fr        #
+#    Updated: 2023/09/15 01:48:55 by mfujimak         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = minishell
 CC = cc
 CFLAGS = -Wall -Wextra -Werror
+CPPFLAGS    := -I./include
 
 OBJ_DIR ?= ./obj
 SRC_DIRS ?= ./src
 LIB_DIR ?= ./lib
 HEADER_DIR ?= ./include
 
-SRC := $(shell find $(SRC_DIRS) -name \*.c)
-OBJ := $(SRC:%=$(OBJ_DIR)/%.o)
+VPATH = src lib
+
+SRC := shell.c
+OBJ := $(SRC:%.c=$(OBJ_DIR)/%.o)
 HEADER := $(shell find $(HEADER_DIR) -name \*.h)
 
-$(OBJ_DIR)/%.c.o: %.c
-    $(MKDIR_P) $(dir $@)
-    $(CC) $(CPPFLAGS) $(CFLAGS) -c $< -o $@
+.PHONY: all clean fclean re test
 
 all :$(NAME)
 
+$(OBJ_DIR)/%.o: %.c
+	mkdir -p $(OBJ_DIR)
+	$(CC) $(CFLAGS) $(CPPFLAGS) -c $< -o $@
+
 $(NAME): $(OBJ)
-	$(CC) $(OBJ) -o $(NAME)
+	$(CC)  $(CPPFLAGS) $(OBJ) -o $@
 
 clean :
-	rm -f *.o
+	rm -r $(OBJ_DIR)
 
 fclean: clean
 	rm -f $(NAME)
 
 re: fclean all
 
--include $(DEPS)
+test:
+	@cd ./test && bash test.sh
 
-MKDIR_P ?= mkdir –p
+norm:
+	norminette
