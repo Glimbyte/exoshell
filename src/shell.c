@@ -6,7 +6,7 @@
 /*   By: mfujimak <mfujimak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/16 21:01:24 by mfujimak          #+#    #+#             */
-/*   Updated: 2023/10/03 19:45:51 by mfujimak         ###   ########.fr       */
+/*   Updated: 2023/10/03 21:24:53 by mfujimak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void	shell_init(void)
 
 int	main(void)
 {
-	s_shell	input;
+	t_shell	input;
 
 	shell_init();
 	while (1)
@@ -38,7 +38,7 @@ int	main(void)
 	exit(0);
 }
 
-void	reader_loop(s_shell *input)
+void	reader_loop(t_shell *input)
 {
 	int		EOF_Reached;
 
@@ -50,9 +50,13 @@ void	reader_loop(s_shell *input)
 	}
 }
 
-void	reader_command(s_shell *command)
+void	reader_command(t_shell *command)
 {
-	exec(command->line);
+	char	*path;
+
+	path = exec_search_pash(command);
+	exec(path);
+	free(path);
 }
 
 void	shell_end(void)

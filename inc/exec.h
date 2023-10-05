@@ -6,7 +6,7 @@
 /*   By: mfujimak <mfujimak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/03 17:03:46 by mfujimak          #+#    #+#             */
-/*   Updated: 2023/10/03 17:23:31 by mfujimak         ###   ########.fr       */
+/*   Updated: 2023/10/03 21:21:23 by mfujimak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,4 +20,5 @@
 #include <sys/wait.h>
 
 void	fatal_error(const char *msg) __attribute__((noreturn));
-int	exec(char *path);
+int		exec(char *path);
+char	*exec_search_pash(const char *file)
