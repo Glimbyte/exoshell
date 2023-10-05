@@ -6,23 +6,35 @@
 #    By: mfujimak <mfujimak@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/09/14 18:00:19 by mfujimak          #+#    #+#              #
-#    Updated: 2023/09/15 01:48:55 by mfujimak         ###   ########.fr        #
+#    Updated: 2023/10/03 17:38:09 by mfujimak         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = minishell
 CC = cc
 CFLAGS = -Wall -Wextra -Werror
-CPPFLAGS    := -I./include
+CPPFLAGS    := -I./inc
+
+LINK_LIB := -lreadline
+ifeq ($(shell uname), Linux)
+	LINK_LIB += -lbsd
+endif
+
+ifeq ($(shell uname), Darwin)
+	# User have to run brew install readline before run make to build minishell
+	CFLAGS += -I $(shell brew --prefix readline)/include
+	LINK_LIB += -L$(shell brew --prefix readline)/lib
+endif
+
 
 OBJ_DIR ?= ./obj
 SRC_DIRS ?= ./src
 LIB_DIR ?= ./lib
 HEADER_DIR ?= ./include
 
-VPATH = src lib
+VPATH = src lib src/exec
 
-SRC := shell.c
+SRC := shell.c exec.c
 OBJ := $(SRC:%.c=$(OBJ_DIR)/%.o)
 HEADER := $(shell find $(HEADER_DIR) -name \*.h)
 
@@ -35,7 +47,7 @@ $(OBJ_DIR)/%.o: %.c
 	$(CC) $(CFLAGS) $(CPPFLAGS) -c $< -o $@
 
 $(NAME): $(OBJ)
-	$(CC)  $(CPPFLAGS) $(OBJ) -o $@
+	$(CC)  $(CPPFLAGS) $(OBJ) -o $@ $(LINK_LIB)
 
 clean :
 	rm -r $(OBJ_DIR)
@@ -46,7 +58,7 @@ fclean: clean
 re: fclean all
 
 test:
-	@cd ./test && bash test.sh
+	@cd ./test && bash test_tmp.sh
 
 norm:
 	norminette
