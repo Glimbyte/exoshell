@@ -1,34 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   exec.c                                             :+:      :+:    :+:   */
+/*   error.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mfujimak <mfujimak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/03 15:37:02 by mfujimak          #+#    #+#             */
-/*   Updated: 2023/10/06 11:07:03 by mfujimak         ###   ########.fr       */
+/*   Created: 2023/10/06 11:06:17 by mfujimak          #+#    #+#             */
+/*   Updated: 2023/10/06 11:06:28 by mfujimak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "exec.h"
-#include "error.h"
+#include <stdlib.h>
+#include <unistd.h>
 
-int	exec(char *path)
-{
-	char		*argv[] = {path, NULL};
-	extern char	**environ;
-	pid_t		pid;
-	int			status;
+#include <stdio.h>
+#include <sys/types.h>
+#include <sys/wait.h>
 
-pid = fork();
-	if (pid < 0)
-		fatal_error("fork");
-	else if (pid == 0) // child process
-		execve(path, argv, environ);
-	else
-	{
-		wait(&status);
-		return (WEXITSTATUS(status));
-	}
-	return (0);
-}
+#include <limits.h>
+#include <bsd/string.h>
+
+
+
+void	fatal_error(const char *msg) __attribute__((noreturn));

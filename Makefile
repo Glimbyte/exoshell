@@ -6,7 +6,7 @@
 #    By: mfujimak <mfujimak@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/09/14 18:00:19 by mfujimak          #+#    #+#              #
-#    Updated: 2023/10/03 17:38:09 by mfujimak         ###   ########.fr        #
+#    Updated: 2023/10/06 11:20:06 by mfujimak         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -34,7 +34,12 @@ HEADER_DIR ?= ./include
 
 VPATH = src lib src/exec
 
-SRC := shell.c exec.c
+SRC := shell.c
+
+SRC += exec.c exec_path.c
+
+SRC += error.c
+
 OBJ := $(SRC:%.c=$(OBJ_DIR)/%.o)
 HEADER := $(shell find $(HEADER_DIR) -name \*.h)
 

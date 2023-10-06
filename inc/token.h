@@ -1,34 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   exec.c                                             :+:      :+:    :+:   */
+/*   token.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mfujimak <mfujimak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/03 15:37:02 by mfujimak          #+#    #+#             */
-/*   Updated: 2023/10/06 11:07:03 by mfujimak         ###   ########.fr       */
+/*   Created: 2023/10/03 22:24:41 by mfujimak          #+#    #+#             */
+/*   Updated: 2023/10/06 09:44:09 by mfujimak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "exec.h"
-#include "error.h"
+#include <string.h>
+#include <stdlib.h>
 
-int	exec(char *path)
+#include "ft_subbool.h"
+
+typedef enum e_token_kind
 {
-	char		*argv[] = {path, NULL};
-	extern char	**environ;
-	pid_t		pid;
-	int			status;
+	TK_WORD,
+	TK_RESERVED,
+	TK_OP,
+	TK_EOF,
+} t_token_kind;
 
-pid = fork();
-	if (pid < 0)
-		fatal_error("fork");
-	else if (pid == 0) // child process
-		execve(path, argv, environ);
-	else
-	{
-		wait(&status);
-		return (WEXITSTATUS(status));
-	}
-	return (0);
-}
+typedef struct s_token
+{
+	char *word;
+	t_token_kind kind;
+	t_token *next;
+} t_token;

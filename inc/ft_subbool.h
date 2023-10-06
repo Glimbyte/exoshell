@@ -1,34 +1,17 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   exec.c                                             :+:      :+:    :+:   */
+/*   ft_subbool.h                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mfujimak <mfujimak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/03 15:37:02 by mfujimak          #+#    #+#             */
-/*   Updated: 2023/10/06 11:07:03 by mfujimak         ###   ########.fr       */
+/*   Created: 2023/10/06 09:42:13 by mfujimak          #+#    #+#             */
+/*   Updated: 2023/10/06 11:13:42 by mfujimak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "exec.h"
-#include "error.h"
-
-int	exec(char *path)
-{
-	char		*argv[] = {path, NULL};
-	extern char	**environ;
-	pid_t		pid;
-	int			status;
-
-pid = fork();
-	if (pid < 0)
-		fatal_error("fork");
-	else if (pid == 0) // child process
-		execve(path, argv, environ);
-	else
-	{
-		wait(&status);
-		return (WEXITSTATUS(status));
-	}
-	return (0);
-}
+#define bool _Bool
+#define true 1
+#define false 0
+#define SUCCESS 1
+#define FALSE 0

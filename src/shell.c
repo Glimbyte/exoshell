@@ -6,11 +6,12 @@
 /*   By: mfujimak <mfujimak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/16 21:01:24 by mfujimak          #+#    #+#             */
-/*   Updated: 2023/10/03 21:24:53 by mfujimak         ###   ########.fr       */
+/*   Updated: 2023/10/06 11:24:06 by mfujimak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "shell.h"
+#include "exec.h"
 
 void	shell_init(void)
 {
@@ -54,8 +55,11 @@ void	reader_command(t_shell *command)
 {
 	char	*path;
 
-	path = exec_search_pash(command);
+	path = exec_search_pash(command->line);
+	if (path == NULL)
+		fatal_error("can not malloc <exec_serch_path>");
 	exec(path);
+	// exec(command->line);
 	free(path);
 }
 
