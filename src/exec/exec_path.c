@@ -6,13 +6,27 @@
 /*   By: mfujimak <mfujimak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/03 20:04:57 by mfujimak          #+#    #+#             */
-/*   Updated: 2023/10/06 11:23:16 by mfujimak         ###   ########.fr       */
+/*   Updated: 2023/10/10 10:21:22 by mfujimak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "exec.h"
 
 //this use acsecc, getenv
+
+void	exec_path(char *path)
+{
+	if(path == strchr(path, '/'))
+		exec(path);
+	else
+	{
+		path = exec_search_pash(path);
+		if (path == NULL)
+			fatal_error("can not find path <exec_serch_path>");
+		exec(path);
+		free(path);
+	}
+}
 
 char	*exec_search_pash(const char *file)
 {

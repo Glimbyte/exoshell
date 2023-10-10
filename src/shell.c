@@ -6,12 +6,13 @@
 /*   By: mfujimak <mfujimak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/16 21:01:24 by mfujimak          #+#    #+#             */
-/*   Updated: 2023/10/06 11:24:06 by mfujimak         ###   ########.fr       */
+/*   Updated: 2023/10/10 23:43:15 by mfujimak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "shell.h"
 #include "exec.h"
+#include "token.h"
 
 void	shell_init(void)
 {
@@ -53,14 +54,12 @@ void	reader_loop(t_shell *input)
 
 void	reader_command(t_shell *command)
 {
-	char	*path;
+	// char *line;
+	// t_token *tok;
 
-	path = exec_search_pash(command->line);
-	if (path == NULL)
-		fatal_error("can not malloc <exec_serch_path>");
-	exec(path);
-	// exec(command->line);
-	free(path);
+	// tok = tokenize(line);
+	// exec_main(tok);
+	exec_path(command->line);
 }
 
 void	shell_end(void)

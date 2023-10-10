@@ -6,7 +6,7 @@
 /*   By: mfujimak <mfujimak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/03 22:23:12 by mfujimak          #+#    #+#             */
-/*   Updated: 2023/10/06 11:41:53 by mfujimak         ###   ########.fr       */
+/*   Updated: 2023/10/10 09:58:02 by mfujimak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,7 @@ t_token	*tokenize(char *command)
 {
 	t_token head;
 	t_token *cur;
+	int		op_len;
 
 	head.next = NULL;
 	cur = &head;
@@ -64,15 +65,20 @@ t_token	*tokenize(char *command)
 	{
 		while (is_blank(*command))
 			command++;
-		is_control_op(command, {"||", "&", "&&", ";", ";;", "(", ")", "|", "\n"}, 9);
+		op_len = is_control_op(command);
+		if (op_len)
+			command += control_op(op_len, cur, command);
+		if (is_word(command))
+			command += word(cur, command);
 		command++;
 	}
+	new_token( TK_EOF, cur, NULL);
 	return (head.next);
 }
 
 bool	is_blank(char s)
 {
-	return (s && strchr(" \t"));
+	return (s && strchr(" \t", s));
 }
 
 bool	is_metacharacter(char s)
@@ -85,36 +91,46 @@ bool	is_word(char s)
 	return (s && !is_metacharacter(s));
 }
 
-int		is_control_op(char *command, char *con_op[], int len)
+int	is_control_op(char *command)
 {
-	int	f_n;
-	int s_n;
-	int	flag;
+	int	n;
+	char *con_op[] = {"||", "&&", ";;", "|", "&", ";", "(", ")", "\n"};
 
-	flag = 0;
-	f_n = 0;
-	while (f_n < len)
+	n = 0;
+	while (n < sizeof(con_op) / sizeof(*con_op))
 	{
-		s_n = 0;
-		while (con_op[f_n][s_n])
-		{
-			flag = 1;
-			if (command[s_n] != con_op[f_n][s_n])
-			{
-				flag = 0;
-				break;
-			}
-			s_n++;
-		}
-		if (flag == 1)
-			break;
-		f_n++;
+		if (strncmp(command, con_op[n], strlen(con_op[n])) == 0)
+			return (strlen(con_op[n]));
+		n++;
 	}
-	if (flag == 1)
-	{
-		return (strlen(con_op[f_n]));
-	}
-	return (0);
+	return (false);
+
+}
+
+int	word(t_token *cur, char *command)
+{
+	int	ward_len;
+	char	ward;
+
+	ward_len = 0;
+	while (is_ward(command[ward_len]))
+		ward_len++;
+	ward = strndup(command, ward_len);
+	if (ward == NULL)
+		fatal_error("can not make ward <token.c>");
+	new_token(TK_WORD, cur, ward);
+	return(ward_len);
+}
+
+int	control_op(int op_len, t_token *cur, char *command)
+{
+	char	*op_ward;
+
+	op_ward = strndup(command, op_len);
+	if (op_ward == NULL)
+		fatal_error("can not make op_ward <token.c>");
+	new_token( TK_OP, cur, op_ward);
+	return (op_len);
 }
 
 t_token	*new_token(t_token_kind kind,t_token *cur, char *word)

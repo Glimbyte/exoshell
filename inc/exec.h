@@ -6,7 +6,7 @@
 /*   By: mfujimak <mfujimak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/03 17:03:46 by mfujimak          #+#    #+#             */
-/*   Updated: 2023/10/06 11:19:02 by mfujimak         ###   ########.fr       */
+/*   Updated: 2023/10/10 10:02:41 by mfujimak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,3 +25,4 @@
 void	fatal_error(const char *msg) __attribute__((noreturn));
 int		exec(char *path);
 char	*exec_search_pash(const char *file);
+void	exec_path(char *path);

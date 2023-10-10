@@ -6,7 +6,7 @@
 /*   By: mfujimak <mfujimak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/03 22:24:41 by mfujimak          #+#    #+#             */
-/*   Updated: 2023/10/06 09:44:09 by mfujimak         ###   ########.fr       */
+/*   Updated: 2023/10/10 10:17:18 by mfujimak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,9 +23,20 @@ typedef enum e_token_kind
 	TK_EOF,
 } t_token_kind;
 
-typedef struct s_token
+typedef struct s_token t_token;
+
+struct s_token
 {
 	char *word;
 	t_token_kind kind;
 	t_token *next;
-} t_token;
+};
+
+t_token	*tokenize(char *command);
+bool	is_blank(char s);
+bool	is_metacharacter(char s);
+bool	is_word(char s);
+int	is_control_op(char *command);
+int	word(t_token *cur, char *command);
+int	control_op(int op_len, t_token *cur, char *command);
+t_token	*new_token(t_token_kind kind,t_token *cur, char *word);
