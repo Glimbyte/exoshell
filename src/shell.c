@@ -6,13 +6,11 @@
 /*   By: mfujimak <mfujimak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/16 21:01:24 by mfujimak          #+#    #+#             */
-/*   Updated: 2023/10/10 23:43:15 by mfujimak         ###   ########.fr       */
+/*   Updated: 2023/10/11 14:50:35 by mfujimak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "shell.h"
-#include "exec.h"
-#include "token.h"
 
 void	shell_init(void)
 {
@@ -55,11 +53,21 @@ void	reader_loop(t_shell *input)
 void	reader_command(t_shell *command)
 {
 	// char *line;
-	// t_token *tok;
+	t_token *tok;
 
 	// tok = tokenize(line);
 	// exec_main(tok);
-	exec_path(command->line);
+	// exec_path(command->line);
+	command->tok = tokenize(command->line);
+
+	tok = command->tok;
+	while (tok->kind != TK_EOF)
+	{
+		printf("token is >%s< \n", tok->word);
+		tok = tok->next;
+	}
+	if (tok->kind == TK_EOF)
+		printf("token_EOF\n");
 }
 
 void	shell_end(void)

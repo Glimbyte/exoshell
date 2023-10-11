@@ -6,7 +6,7 @@
 /*   By: mfujimak <mfujimak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/16 21:01:34 by mfujimak          #+#    #+#             */
-/*   Updated: 2023/10/03 21:26:46 by mfujimak         ###   ########.fr       */
+/*   Updated: 2023/10/11 14:40:56 by mfujimak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 
 //exec.c
 #include "exec.h"
+#include "token.h"
 
 // char *readline(const char *prompt)
 // void using_history(void)
@@ -28,6 +29,7 @@
 typedef struct struct_shell
 {
 	char	*line;
+	t_token	*tok;
 }			t_shell;
 
 void		shell_init(void);

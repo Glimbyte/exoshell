@@ -6,7 +6,7 @@
 #    By: mfujimak <mfujimak@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/09/14 18:00:19 by mfujimak          #+#    #+#              #
-#    Updated: 2023/10/10 23:42:43 by mfujimak         ###   ########.fr        #
+#    Updated: 2023/10/11 14:44:57 by mfujimak         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -30,9 +30,9 @@ endif
 OBJ_DIR ?= ./obj
 SRC_DIRS ?= ./src
 LIB_DIR ?= ./lib
-HEADER_DIR ?= ./include
+HEADER_DIR ?= ./inc
 
-VPATH = src lib src/exec src/token
+VPATH = src lib src/exec src/token src/expand
 
 SRC := shell.c
 

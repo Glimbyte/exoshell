@@ -1,26 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   error.h                                            :+:      :+:    :+:   */
+/*   expand.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mfujimak <mfujimak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/06 11:06:17 by mfujimak          #+#    #+#             */
-/*   Updated: 2023/10/11 00:23:24 by mfujimak         ###   ########.fr       */
+/*   Created: 2023/10/11 14:45:03 by mfujimak          #+#    #+#             */
+/*   Updated: 2023/10/11 15:14:44 by mfujimak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdlib.h>
-#include <unistd.h>
+#include "expand.h"
+#include "token.h"
 
-#include <stdio.h>
-#include <sys/types.h>
-#include <sys/wait.h>
+t_token *expand(t_token *tok)
+{
+	quote_removal(tok)
+	return (tok);
+}
 
-#include <limits.h>
-#include <bsd/string.h>
+void	quote_removal(t_token *tok)
+{
+	char	*re_word;
+	int		n;
 
+	n = 0;
+	if (tok->kind == TK_EOF)
+		return ;
+	while (tok->word[n] != '\0')
 
-
-void	fatal_error(const char *msg) __attribute__((noreturn));
-void	Todo(const char *msg);
+	quote_removal(tok->next);
+}
