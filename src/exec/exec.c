@@ -6,12 +6,11 @@
 /*   By: mfujimak <mfujimak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/03 15:37:02 by mfujimak          #+#    #+#             */
-/*   Updated: 2023/10/10 10:05:05 by mfujimak         ###   ########.fr       */
+/*   Updated: 2023/10/12 13:07:27 by mfujimak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "exec.h"
-#include "error.h"
+#include "shell.h"
 
 int	exec(char *path)
 {

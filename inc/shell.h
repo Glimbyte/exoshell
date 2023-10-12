@@ -6,7 +6,7 @@
 /*   By: mfujimak <mfujimak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/16 21:01:34 by mfujimak          #+#    #+#             */
-/*   Updated: 2023/10/11 14:40:56 by mfujimak         ###   ########.fr       */
+/*   Updated: 2023/10/12 13:10:11 by mfujimak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,15 @@
 #include <unistd.h>
 
 //exec.c
-#include "exec.h"
+#include "ft_subbool.h"
+#include "ft_substdio.h"
+#include "error.h"
 #include "token.h"
+#include "parser.h"
+#include "exec.h"
+#include "expand.h"
+#include "exit.h"
+
 
 // char *readline(const char *prompt)
 // void using_history(void)
@@ -30,6 +37,7 @@ typedef struct struct_shell
 {
 	char	*line;
 	t_token	*tok;
+	t_node	*node;
 }			t_shell;
 
 void		shell_init(void);

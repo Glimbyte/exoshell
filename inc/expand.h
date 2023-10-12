@@ -6,7 +6,9 @@
 /*   By: mfujimak <mfujimak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/11 14:45:15 by mfujimak          #+#    #+#             */
-/*   Updated: 2023/10/11 15:07:22 by mfujimak         ###   ########.fr       */
+/*   Updated: 2023/10/12 13:12:23 by mfujimak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+t_token *expand(t_node *node);
+void	quote_removal(t_token *tok);

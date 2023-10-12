@@ -6,7 +6,7 @@
 /*   By: mfujimak <mfujimak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/03 22:23:12 by mfujimak          #+#    #+#             */
-/*   Updated: 2023/10/11 14:39:38 by mfujimak         ###   ########.fr       */
+/*   Updated: 2023/10/12 13:25:00 by mfujimak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,8 +50,7 @@ typedef enum e_token_kind
 } t_token_kind;
 */
 
-#include "token.h"
-#include "error.h"
+#include "shell.h"
 
 t_token	*tokenize(char *line)
 {
@@ -68,8 +67,6 @@ t_token	*tokenize(char *line)
 		op_len = is_control_op(line);
 		if (op_len)
 			line += control_op(op_len, cur, line);
-		else if (is_single_quote(*line))
-			line += single_quote(cur, line);
 		else if (is_word(*line))
 			line += word(cur, line);
 		cur = cur->next;
@@ -98,6 +95,11 @@ bool	is_single_quote(char s)
 	return (s == '\'');
 }
 
+bool	is_duble_quote(char s)
+{
+	return (s == '\"');
+}
+
 int	is_control_op(char *line)
 {
 	long unsigned int	n;
@@ -119,13 +121,44 @@ int	word(t_token *cur, char *line)
 	char	*word;
 
 	word_len = 0;
-	while (is_word(line[word_len]))
-		word_len++;
+	while (is_word(line[word_len]) || is_single_quote(line[word_len]))
+	{
+		if(is_single_quote(line[word_len]))
+			word_len += single_quote(line + word_len);
+		else if(is_duble_quote(line[word_len]))
+			word_len += duble_quote(line + word_len);
+		else
+			word_len++;
+	}
 	word = strndup(line, word_len);
 	if (word == NULL)
 		fatal_error("can not make word <token.c>");
 	new_token(TK_WORD, cur, word);
 	return(word_len);
+}
+
+int	single_quote(char *line)
+{
+	int	len;
+
+	len = 1;
+	while(!is_single_quote(line[len]) && line[len] != '\0')
+		len++;
+	if (line[len] == '\0')
+		Todo("dont have single_quote TODO Tokenize Error");
+	return (len + 1);
+}
+
+int	duble_quote(char *line)
+{
+	int	len;
+
+	len = 1;
+	while(!is_duble_quote(line[len]) && line[len] != '\0')
+		len++;
+	if (line[len] == '\0')
+		Todo("dont have duble_quote. TODO Tokenize Error");
+	return (len + 1);
 }
 
 int	control_op(int op_len, t_token *cur, char *line)
@@ -139,27 +172,6 @@ int	control_op(int op_len, t_token *cur, char *line)
 	return (op_len);
 }
 
-int	single_quote(t_token *cur, char *line)
-{
-	int	len;
-	char	*word;
-
-	len = 1;
-	while(!is_single_quote(line[len]) && line[len] != '\0')
-		len++;
-	if (line[len] == '\0')
-		Todo("dont have single_quote");
-	if (len != 0)
-	{
-		word = strndup(line, len + 1);
-		if (word == NULL)
-			fatal_error("can not make op_word <token.c>");
-		new_token( TK_WORD, cur, word);
-	} else
-		cur->next = cur;
-	return (len + 1);
-}
-
 t_token	*new_token(t_token_kind kind,t_token *cur, char *word)
 {
 	t_token *new_token;
@@ -168,7 +180,7 @@ t_token	*new_token(t_token_kind kind,t_token *cur, char *word)
 	if (new_token == NULL)
 		fatal_error("can not make new_token <token.c>");
 	cur->next = new_token;
-	new_token->next = new_token;
+	new_token->next = NULL;
 	new_token->word = word;
 	new_token->kind = kind;
 	return (new_token);

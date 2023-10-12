@@ -6,7 +6,7 @@
 #    By: mfujimak <mfujimak@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/09/14 18:00:19 by mfujimak          #+#    #+#              #
-#    Updated: 2023/10/11 14:44:57 by mfujimak         ###   ########.fr        #
+#    Updated: 2023/10/12 13:13:51 by mfujimak         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -32,13 +32,17 @@ SRC_DIRS ?= ./src
 LIB_DIR ?= ./lib
 HEADER_DIR ?= ./inc
 
-VPATH = src lib src/exec src/token src/expand
+VPATH = src lib src/exec src/token src/expand src/parser
 
 SRC := shell.c
 
 SRC += exec.c exec_path.c
 
 SRC += token.c
+
+SRC += expand.c ft_substdio.c
+
+SRC += parser.c
 
 SRC += error.c
 

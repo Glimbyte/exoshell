@@ -6,11 +6,11 @@
 /*   By: mfujimak <mfujimak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/03 20:04:57 by mfujimak          #+#    #+#             */
-/*   Updated: 2023/10/10 10:21:22 by mfujimak         ###   ########.fr       */
+/*   Updated: 2023/10/12 13:07:18 by mfujimak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "exec.h"
+#include "shell.h"
 
 //this use acsecc, getenv
 
