@@ -6,7 +6,7 @@
 /*   By: mfujimak <mfujimak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/16 21:01:24 by mfujimak          #+#    #+#             */
-/*   Updated: 2023/10/12 13:41:48 by mfujimak         ###   ########.fr       */
+/*   Updated: 2023/10/13 02:53:50 by mfujimak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,13 +61,7 @@ void	reader_command(t_shell *command)
 	command->tok = tokenize(command->line);
 	command->node = parser(command->tok);
 	tok = expand(command->node);
-	while (tok->kind != TK_EOF)
-	{
-		printf("token is >%s< \n", tok->word);
-		tok = tok->next;
-	}
-	if (tok->kind == TK_EOF)
-		printf("token_EOF\n");
+	exec_cmd(tok->word, tok);
 }
 
 void	shell_end(void)

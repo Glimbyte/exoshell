@@ -6,7 +6,7 @@
 /*   By: mfujimak <mfujimak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/03 20:04:57 by mfujimak          #+#    #+#             */
-/*   Updated: 2023/10/12 13:07:18 by mfujimak         ###   ########.fr       */
+/*   Updated: 2023/10/13 02:55:22 by mfujimak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,16 +14,16 @@
 
 //this use acsecc, getenv
 
-void	exec_path(char *path)
+void	exec_path(char *path, char **argv)
 {
 	if(path == strchr(path, '/'))
-		exec(path);
+		exec(path, argv);
 	else
 	{
 		path = exec_search_pash(path);
 		if (path == NULL)
 			fatal_error("can not find path <exec_serch_path>");
-		exec(path);
+		exec(path, argv);
 		free(path);
 	}
 }

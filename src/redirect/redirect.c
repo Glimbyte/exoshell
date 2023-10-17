@@ -1,32 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   exec.c                                             :+:      :+:    :+:   */
+/*   redirect.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mfujimak <mfujimak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/03 15:37:02 by mfujimak          #+#    #+#             */
-/*   Updated: 2023/10/13 03:09:40 by mfujimak         ###   ########.fr       */
+/*   Created: 2023/10/13 02:07:13 by mfujimak          #+#    #+#             */
+/*   Updated: 2023/10/16 08:59:06 by mfujimak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "shell.h"
+/*
+use dup2 strashfd open
+*/
 
-int	exec(char *path, char **argv)
+//TOOD
+
+void	dup_redirect(int targetfd, char *filename)
 {
-	extern char	**environ;
-	pid_t		pid;
-	int			status;
+	int filefd;
+}
 
-	pid = fork();
-	if (pid < 0)
-		fatal_error("fork");
-	else if (pid == 0) // child process
-		execve(path, argv, environ);
-	else
-	{
-		wait(&status);
-		return (WEXITSTATUS(status));
-	}
-	return (0);
+void	reset_redirect(int targetfd)
+{
 }
