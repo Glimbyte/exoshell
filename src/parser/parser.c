@@ -6,7 +6,7 @@
 /*   By: mfujimak <mfujimak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/11 23:35:52 by mfujimak          #+#    #+#             */
-/*   Updated: 2023/10/17 14:00:39 by mfujimak         ###   ########.fr       */
+/*   Updated: 2023/10/18 13:21:45 by mfujimak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,6 +73,7 @@ enum e_node_kind
 
 t_node	*parser(t_token *tok)
 {
+	printf("parser\n");
 	t_node	*head;
 
 	head = new_node(SIMPLE_CMD_LINE);
@@ -82,26 +83,34 @@ t_node	*parser(t_token *tok)
 
 void	statement(t_node *node, t_token *tok)
 {
+	printf("statement\n");
 	if (p_accept(node, SIMPLE_CMD_LINE))
 		p_cmd_line( node, tok);
 	else if (p_accept(node, DELIMITER))
-		p_delimiter( node, tok)
+		p_delimiter( node, tok);
 	else if (p_accept(node, SEQUENTIAL_CMD))
 		p_sequential_cmd(node, tok);
 	else if (p_accept(node, PIPE_CMD))
+		p_piped_commands( node, tok);
 	else if (p_accept(node, CMD))
+		p_command( node, tok);
 	else if (p_accept(node, ARGUMENT))
+		p_arguments( node, tok);
 	else if (p_accept(node, STRING))
+		p_string( node, tok);
 	else if (p_accept(node, RE_DIRECTUIN))
+		p_redirection( node, tok);
 }
 
 void	p_cmd_line(t_node *node, t_token *tok)
 {
+	printf("cmd_line\n");
 	t_token	*tmp_tok;
 
 	tmp_tok = tok;
-	while (!(p_expect(tmp_tok->next, TK_OP, ";") && tmp_tok->next->next == TK_EOF) && tmp_tok->next->next != TK_EOF)
+	while (!(p_expect(tmp_tok, TK_OP, ";")))
 		tmp_tok = tmp_tok->next;
+		///???
 	if (p_expect(tmp_tok->next, TK_OP, ";"))
 	{
 		node->cmd_line.sequencial_cmd = new_node(SEQUENTIAL_CMD);
@@ -111,19 +120,25 @@ void	p_cmd_line(t_node *node, t_token *tok)
 		statement(node->cmd_line.sequencial_cmd, tok);
 	}
 	else
+	{
+		node->cmd_line.sequencial_cmd = new_node(SEQUENTIAL_CMD);
+		node->cmd_line.delimiter = NULL;
 		statement(node->cmd_line.sequencial_cmd, tok);
+	}
 }
 
 void	p_delimiter(t_node *node, t_token *tok)
 {
+	printf("delimiter\n");
 	if (p_expect(tok, TK_OP, ";"))
 		node->del.delimiter = tok;
 	else
-		todo("cant del");
+		Todo("cant del");
 }
 
 void	p_sequential_cmd(t_node *node, t_token *tok)
 {
+	printf("seq_cmd\n");
 	t_token	*tmp_tok;
 
 	tmp_tok = tok;
@@ -131,6 +146,8 @@ void	p_sequential_cmd(t_node *node, t_token *tok)
 		tmp_tok = tmp_tok->next;
 	if (tmp_tok->next->kind == TK_EOF)
 	{
+		node->seq_cmd.sequencial_cmd = NULL;
+		node->seq_cmd.delimiter = NULL;
 		node->seq_cmd.piped_commands = new_node(PIPE_CMD);
 		statement(node->seq_cmd.piped_commands, tok);
 	}
@@ -149,6 +166,7 @@ void	p_sequential_cmd(t_node *node, t_token *tok)
 
 void	p_piped_commands(t_node *node, t_token *tok)
 {
+	printf("pip_cmd\n");
 	t_token	*tmp_tok;
 
 	tmp_tok = tok;
@@ -157,8 +175,87 @@ void	p_piped_commands(t_node *node, t_token *tok)
 	if (tmp_tok->next->kind == TK_EOF)
 	{
 		node->pip_cmd.cmd = new_node(CMD);
+		node->pip_cmd.piped_commands = NULL;
+		node->pip_cmd.pipe = NULL;
 		statement(node->pip_cmd.cmd, tok);
 	}
+	else
+	{
+		node->pip_cmd.cmd = new_node(CMD);
+		node->pip_cmd.piped_commands = new_node(PIPE_CMD);
+		node->pip_cmd.pipe = tmp_tok->next;
+		statement(node->pip_cmd.cmd, tmp_tok->next->next);
+		new_token(TK_EOF, tmp_tok->next, NULL);
+		new_token(TK_EOF, tmp_tok, NULL);
+		statement(node->pip_cmd.cmd, tok);
+	}
+}
+
+void	p_command(t_node *node, t_token *tok)
+{
+	printf("cmd\n");
+	node->cmd.arguments = new_node(ARGUMENT);
+	statement(node->cmd.arguments, tok);
+}
+
+void	p_arguments(t_node *node, t_token *tok)
+{
+	printf("arg_cmd\n");
+	if ((strchr( tok->word, '<') || strchr( tok->word, '>')) && tok->kind == TK_OP)
+	{
+		if (tok->next->kind != TK_WORD)
+			Todo("redirection dont have word");
+		else if (tok->next->kind == TK_WORD && tok->next->next->kind == TK_WORD)
+		{
+			node->arg.redirection = new_node(RE_DIRECTUIN);
+			node->arg.arguments = new_node(ARGUMENT);
+			statement(node->arg.arguments, tok->next->next);
+			new_token(TK_EOF ,tok->next, NULL);
+			statement(node->arg.redirection, tok);
+		}
+		else if (tok->next->kind == TK_WORD)
+		{
+			node->arg.arguments = NULL;
+			node->arg.redirection = new_node(RE_DIRECTUIN);
+			statement(node->arg.redirection, tok);
+		}
+	}
+	else
+	{
+		if (tok->kind != TK_WORD)
+			Todo("redirection dont have word mistake!!");
+		else if (tok->next->kind  == TK_WORD)
+		{
+			node->arg.redirection = NULL;
+			node->arg.string = new_node(STRING);
+			node->arg.arguments = new_node(ARGUMENT);
+			statement(node->arg.arguments, tok->next);
+			new_token(TK_EOF, tok, NULL);
+			statement(node->arg.string, tok);
+		}
+		else if (tok->kind == TK_WORD)
+		{
+			node->arg.redirection = NULL;
+			node->arg.arguments = NULL;
+			node->arg.string = new_node(STRING);
+			statement(node->arg.string, tok);
+		}
+	}
+}
+
+void	p_string(t_node *node, t_token *tok)
+{
+	printf("string\n");
+	node->string.string = tok;
+}
+
+void	p_redirection(t_node *node, t_token *tok)
+{
+	printf("redirection\n");
+	node->redirection.redi = tok;
+	node->redirection.string = new_node(STRING);
+	statement(node->redirection.string, tok->next);
+	new_token(TK_EOF, tok, NULL);
 }
 
 bool	p_expect(t_token *tok, t_token_kind kind, const char *word)
@@ -166,7 +263,7 @@ bool	p_expect(t_token *tok, t_token_kind kind, const char *word)
 	if (tok->kind == TK_EOF)
 		return (FALSE);
 	if (kind == tok->kind)
-		if(strncmp(tok->kind, word, strlen(word)) == 0)
+		if(strncmp(tok->word, word, strlen(word)) == 0)
 			return (SUCCESS);
 	return (FALSE);
 }
@@ -182,6 +279,7 @@ t_node	*new_node(t_node_kind kind)
 	new_node = calloc(1, sizeof(t_node*));
 	if (new_node == NULL)
 		fatal_error("cant calloc <paeser.c>");
+	new_node->kind = kind;
 	return (new_node);
 }
 

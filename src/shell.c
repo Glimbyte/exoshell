@@ -6,7 +6,7 @@
 /*   By: mfujimak <mfujimak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/16 21:01:24 by mfujimak          #+#    #+#             */
-/*   Updated: 2023/10/13 02:53:50 by mfujimak         ###   ########.fr       */
+/*   Updated: 2023/10/18 13:11:18 by mfujimak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,15 +53,15 @@ void	reader_loop(t_shell *input)
 void	reader_command(t_shell *command)
 {
 	// char *line;
-	t_token *tok;
+	// t_token *tok;
 
 	// tok = tokenize(line);
 	// exec_main(tok);
 	// exec_path(command->line);
 	command->tok = tokenize(command->line);
 	command->node = parser(command->tok);
-	tok = expand(command->node);
-	exec_cmd(tok->word, tok);
+	// tok = expand(command->node);
+	// exec_cmd(tok->word, tok);
 }
 
 void	shell_end(void)
