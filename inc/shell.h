@@ -6,7 +6,7 @@
 /*   By: mfujimak <mfujimak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/16 21:01:34 by mfujimak          #+#    #+#             */
-/*   Updated: 2023/10/12 13:10:11 by mfujimak         ###   ########.fr       */
+/*   Updated: 2023/10/22 18:14:14 by mfujimak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@
 #include "error.h"
 #include "token.h"
 #include "parser.h"
+#include "redirect.h"
 #include "exec.h"
 #include "expand.h"
 #include "exit.h"

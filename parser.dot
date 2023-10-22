@@ -1,0 +1,13 @@
+digraph PARSER {
+	NODE_0x55e0e4f09cc0 [label="SIMPLE_CMD_LINE\n"];
+	NODE_0x55e0e4f09cc0 -> NODE_0x55e0e4f09c90
+	NODE_0x55e0e4f09c90 [label="SEQUENTIAL_CMD\n"];
+	NODE_0x55e0e4f09c90 -> NODE_0x55e0e4f09c60
+	NODE_0x55e0e4f09c60 [label="PIPE_CMD\n"];
+	NODE_0x55e0e4f09c60 -> NODE_0x55e0e4f09c30
+	NODE_0x55e0e4f09c30 [label="CMD\n"];
+	NODE_0x55e0e4f09c30 -> NODE_0x55e0e4f09c00
+	NODE_0x55e0e4f09c00 [label="ARGUMENT\n"];
+	NODE_0x55e0e4f09c00 -> NODE_0x55e0e4f09bd0
+	NODE_0x55e0e4f09bd0 [label="STRING < sd >\n"];
+}

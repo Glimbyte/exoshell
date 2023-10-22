@@ -5,20 +5,18 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: mfujimak <mfujimak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/13 01:59:19 by mfujimak          #+#    #+#             */
-/*   Updated: 2023/10/13 03:21:52 by mfujimak         ###   ########.fr       */
+/*   Created: 2023/10/22 17:09:08 by mfujimak          #+#    #+#             */
+/*   Updated: 2023/10/22 18:41:04 by mfujimak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "shell.h"
 
-void	exec_cmd(char *path, t_token *tok)
+void	exec_cmd(t_node	*node)
 {
-	char *argv[3];
-	argv[0] = path;
-	argv[1] = exec_token(tok);
-	argv[2] = NULL;
-	printf("%s %s %s\n", argv[0], argv[1], argv[2]);
-	exec_path(path, argv);
-	//TODO free argv
+	if (node->kind != SEQUENTIAL_CMD)
+		fatal_error("not PIPE_CMD <exec_cmd.c>\n");
+	exec_pipe(node->lhs);
+	if (node->rhs != NULL)
+		exec_pipe(node->rhs);
 }

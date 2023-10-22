@@ -6,25 +6,28 @@
 /*   By: mfujimak <mfujimak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/03 17:03:46 by mfujimak          #+#    #+#             */
-/*   Updated: 2023/10/13 03:20:36 by mfujimak         ###   ########.fr       */
+/*   Updated: 2023/10/22 21:29:55 by mfujimak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <readline/history.h>
-#include <readline/readline.h>
-#include <stdlib.h>
-#include <unistd.h>
+typedef struct s_command_exec t_command_exec;
+struct s_command_exec
+{
+	t_redirect	*refirection;
+	char	**argv;
+	pid_t		pid;
+};
 
-#include <stdio.h>
-#include <sys/types.h>
-#include <sys/wait.h>
-
-#include <limits.h>
-#include <bsd/string.h>
-
-int		exec(char *path, char **argv);
+void	exec_cmd(t_node	*node);
+void	exec_pipe(t_node	*node);
+char	**exec_argv(t_node	*node);
+char	*exec_arg(t_node	*node);
+int		exec_argv_len(t_node	*node);
 char	*exec_search_pash(const char *file);
-void	exec_path(char *path, char **argv);
-char	*exec_token(t_token *tok);
-int		token_len(t_token *tok);
-void	exec_cmd(char *path, t_token *tok);
+int		exec(char *path, char **argv);
+
+t_redirect	*exec_redirect(t_node	*node);
+t_redirect_kind	exec_redirect_kind(t_token *tok);
+
+
+void	exec_red_show(t_redirect	*redir);

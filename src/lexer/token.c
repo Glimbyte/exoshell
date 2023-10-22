@@ -6,7 +6,7 @@
 /*   By: mfujimak <mfujimak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/03 22:23:12 by mfujimak          #+#    #+#             */
-/*   Updated: 2023/10/12 13:25:00 by mfujimak         ###   ########.fr       */
+/*   Updated: 2023/10/22 11:50:21 by mfujimak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,9 @@ typedef enum e_token_kind
 
 #include "shell.h"
 
-t_token	*tokenize(char *line)
+int	syntax_error;
+
+t_token	*tokenize(const char *line)
 {
 	t_token head;
 	t_token *cur;
@@ -70,58 +72,20 @@ t_token	*tokenize(char *line)
 		else if (is_word(*line))
 			line += word(cur, line);
 		cur = cur->next;
+		if (tokenize_error(head.next))
+			return (NULL);
 	}
 	new_token( TK_EOF, cur, NULL);
 	return (head.next);
 }
 
-bool	is_blank(char s)
+int	word(t_token *cur, const char *line)
 {
-	return (s && strchr(" \t", s));
-}
-
-bool	is_metacharacter(char s)
-{
-	return (s && strchr("|&;()<> \t" , s));
-}
-
-bool	is_word(char s)
-{
-	return (s && !is_metacharacter(s));
-}
-
-bool	is_single_quote(char s)
-{
-	return (s == '\'');
-}
-
-bool	is_duble_quote(char s)
-{
-	return (s == '\"');
-}
-
-int	is_control_op(char *line)
-{
-	long unsigned int	n;
-	char *con_op[] = {"||", "&&", ";;", "|", "&", ";", "(", ")", "\n"};
-
-	n = 0;
-	while (n < sizeof(con_op) / sizeof(*con_op))
-	{
-		if (strncmp(line, con_op[n], strlen(con_op[n])) == 0)
-			return (strlen(con_op[n]));
-		n++;
-	}
-	return (false);
-}
-
-int	word(t_token *cur, char *line)
-{
-	int	word_len;
+	int		word_len;
 	char	*word;
 
 	word_len = 0;
-	while (is_word(line[word_len]) || is_single_quote(line[word_len]))
+	while (is_word(line[word_len]) && !is_redirection(line[word_len]))
 	{
 		if(is_single_quote(line[word_len]))
 			word_len += single_quote(line + word_len);
@@ -130,6 +94,8 @@ int	word(t_token *cur, char *line)
 		else
 			word_len++;
 	}
+	while (is_redirection(line[word_len]))
+		word_len++;
 	word = strndup(line, word_len);
 	if (word == NULL)
 		fatal_error("can not make word <token.c>");
@@ -137,7 +103,7 @@ int	word(t_token *cur, char *line)
 	return(word_len);
 }
 
-int	single_quote(char *line)
+int	single_quote(const char *line)
 {
 	int	len;
 
@@ -145,11 +111,11 @@ int	single_quote(char *line)
 	while(!is_single_quote(line[len]) && line[len] != '\0')
 		len++;
 	if (line[len] == '\0')
-		Todo("dont have single_quote TODO Tokenize Error");
+		syntax_error = 1;
 	return (len + 1);
 }
 
-int	duble_quote(char *line)
+int	duble_quote(const char *line)
 {
 	int	len;
 
@@ -157,11 +123,26 @@ int	duble_quote(char *line)
 	while(!is_duble_quote(line[len]) && line[len] != '\0')
 		len++;
 	if (line[len] == '\0')
-		Todo("dont have duble_quote. TODO Tokenize Error");
+		syntax_error = 2;
 	return (len + 1);
 }
 
-int	control_op(int op_len, t_token *cur, char *line)
+// int	redirection(t_token *cur, const char *line)
+// {
+// 	int		word_len;
+// 	char	*word;
+
+// 	word_len = 0;
+// 	while (is_redirection(line[word_len]))
+// 		word_len++;
+// 	word = strndup(line, word_len);
+// 	if (word == NULL)
+// 		fatal_error("can not make word <token.c>");
+// 	new_token(TK_WORD, cur, word);
+// 	return(word_len);
+// }
+
+int	control_op(const int op_len, t_token *cur, const char *line)
 {
 	char	*op_word;
 
@@ -186,6 +167,92 @@ t_token	*new_token(t_token_kind kind,t_token *cur, char *word)
 	return (new_token);
 }
 
+bool	is_blank(const char s)
+{
+	return (s && strchr(" \t", s));
+}
 
+bool	is_metacharacter(const char s)
+{
+	return (s && strchr("|&;() \t" , s));
+}
 
+bool	is_redirection(const char s)
+{
+	return (s && strchr("<>" , s));
+}
 
+bool	is_word(const char s)
+{
+	return (s && !is_metacharacter(s));
+}
+
+bool	is_single_quote(const char s)
+{
+	return (s == '\'');
+}
+
+bool	is_duble_quote(const char s)
+{
+	return (s == '\"');
+}
+
+int	is_control_op(const char *line)
+{
+	long unsigned int	n;
+	char *con_op[] = {"||", "&&", ";;", "|", "&", ";", "(", ")", "\n"};
+
+	n = 0;
+	while (n < sizeof(con_op) / sizeof(*con_op))
+	{
+		if (strncmp(line, con_op[n], strlen(con_op[n])) == 0)
+			return (strlen(con_op[n]));
+		n++;
+	}
+	return (false);
+}
+
+int	tokenize_error(t_token *head)
+{
+	if (syntax_error == 0)
+		return (FALSE);
+	else if (syntax_error == 1)
+		printf("dont have single_quote <Tokenize Error>\n");
+	else if (syntax_error == 2)
+		printf("dont have duble_quote. <Tokenize Error>\n");
+	if (syntax_error)
+	{
+		token_free(head);
+		return (SUCCESS);
+	}
+	return (FALSE);
+}
+void	token_free(t_token *head)
+{
+	if (head->next != NULL)
+		token_free(head->next);
+	if (head->word)
+		free(head->word);
+	free(head);
+}
+
+void	token_check(const t_token *tok)
+{
+	int	n;
+
+	n = 0;
+	while (1)
+	{
+		if (tok->kind == TK_WORD)
+			printf("[%d]	type TK_WORD	[%s]\n", n, tok->word);
+		else if (tok->kind == TK_OP)
+			printf("[%d]	type TK_OP	[%s]\n", n, tok->word);
+		else if (tok->kind == TK_EOF)
+		{
+			printf("[%d]	type TK_EOF	[%s]\n", n, tok->word);
+			break;
+		}
+		n++;
+		tok = tok->next;
+	}
+}
