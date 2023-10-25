@@ -6,7 +6,7 @@
 #    By: mfujimak <mfujimak@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/09/14 18:00:19 by mfujimak          #+#    #+#              #
-#    Updated: 2023/10/22 20:48:14 by mfujimak         ###   ########.fr        #
+#    Updated: 2023/10/24 09:50:48 by mfujimak         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -32,15 +32,17 @@ SRC_DIRS ?= ./src
 LIB_DIR ?= ./lib
 HEADER_DIR ?= ./inc
 
-VPATH = src lib src/exec src/lexer src/expand src/parser src/cmd
+VPATH = src lib src/exec src/lexer src/expand src/parser src/cmd src/redirect
 
 SRC := shell.c
 
-SRC += exec_cmd.c exec_pipe.c exec.c exec_redirect.c
+SRC += exec_scmd.c exec_pipe.c exec_cmd.c exec.c exec_redirect.c
 
 SRC += token.c
 
 SRC += expand.c ft_substdio.c
+
+SRC += redirect.c heredoc.c
 
 SRC += parser.c
 
@@ -76,3 +78,4 @@ norm:
 
 dot:
 	 dot -Tpng -o parser.png parser.dot
+	 code ./parser.png

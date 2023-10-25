@@ -6,27 +6,28 @@
 /*   By: mfujimak <mfujimak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/03 15:37:02 by mfujimak          #+#    #+#             */
-/*   Updated: 2023/10/22 18:43:21 by mfujimak         ###   ########.fr       */
+/*   Updated: 2023/10/25 15:50:07 by mfujimak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "shell.h"
 
-int	exec(char *path, char **argv)
+int	exec(t_command_exec	*cmd_exec)
 {
 	extern char	**environ;
-	pid_t		pid;
-	int			status;
 
-	pid = fork();
-	if (pid < 0)
+	cmd_exec->pid = fork();
+	if (cmd_exec->pid < 0)
 		fatal_error("fork");
-	else if (pid == 0) // child process
-		execve(path, argv, environ);
-	else
+	else if (cmd_exec->pid == 0)
 	{
-		wait(&status);
-		return (WEXITSTATUS(status));
+		prepare_c_pipe(cmd_exec);
+		set_redirect(cmd_exec->refirection);
+		execve(cmd_exec->path, cmd_exec->argv, environ);
+		reset_redirect(cmd_exec->refirection);
+		end_c_pipe(cmd_exec);
+		exit(1);
 	}
+	end_p_pipe(cmd_exec);
 	return (0);
 }

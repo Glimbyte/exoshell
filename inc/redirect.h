@@ -6,7 +6,7 @@
 /*   By: mfujimak <mfujimak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/13 02:07:50 by mfujimak          #+#    #+#             */
-/*   Updated: 2023/10/22 21:22:33 by mfujimak         ###   ########.fr       */
+/*   Updated: 2023/10/25 16:00:29 by mfujimak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,5 +28,11 @@ struct s_redirect
 	int				fd;
 	t_redirect		*next;
 };
+
+void	set_redirect(t_redirect *redir);
+void	reset_redirect(t_redirect *redir);
+void	prepare_redirect(int targetfd, t_redirect *redir);
+void	close_redirect(int targetfd, t_redirect *redir);
+int		open_redirect_fd(t_redirect *redir);
 
 int	stashfd(int fd);

@@ -6,117 +6,67 @@
 /*   By: mfujimak <mfujimak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/22 13:25:30 by mfujimak          #+#    #+#             */
-/*   Updated: 2023/10/22 21:54:40 by mfujimak         ###   ########.fr       */
+/*   Updated: 2023/10/25 15:45:33 by mfujimak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "shell.h"
 
-void	exec_pipe(t_node	*node)
+void	exec_pipe(t_node	*node, t_command_exec	*cmd_exec)
 {
 	if (node->kind != PIPE_CMD)
 		fatal_error("not PIPE_CMD <exec_cmd.c>\n");
-	t_command_exec	cmd_exec;
-
-	cmd_exec.argv = exec_argv(node->lhs);
-	cmd_exec.refirection = exec_redirect(node->lhs->lhs);
-	if (cmd_exec.refirection != NULL)
-		exec_red_show(cmd_exec.refirection);
-	if(cmd_exec.argv[0] == strchr(cmd_exec.argv[0], '/'))
-		exec(cmd_exec.argv[0], cmd_exec.argv);
+	if (node->rhs != NULL)
+	{
+		cmd_exec->next = calloc(1, sizeof(t_command_exec));
+		prepare_p_pipe(cmd_exec);
+		exec_cmd (node->lhs, cmd_exec);
+		exec_pipe(node->rhs, cmd_exec->next);
+	}
 	else
-		exec(exec_search_pash(cmd_exec.argv[0]), cmd_exec.argv);
+		exec_cmd (node->lhs, cmd_exec);
+	wait(NULL);
 }
 
-char	**exec_argv(t_node	*node)
+void	prepare_p_pipe(t_command_exec	*cmd_exec)
 {
-	if (node->kind != CMD)
-		fatal_error("not CMD <exec_cmd.c>\n");
-	char	**argv;
-
-	argv = calloc(3, sizeof(char*));
-	if (argv == NULL)
-		fatal_error("cant calloc <exec_cmd.c>\n");
-	node = node->lhs;
-	argv[0] = strdup(node->lhs->val->word);
-	argv[1] = exec_arg(node->rhs);
-	argv[2] = NULL;
-	return (argv);
+	pipe(cmd_exec->output_pipe);
+	cmd_exec->next->input_pipe[0] = cmd_exec->output_pipe[0];
+	cmd_exec->next->input_pipe[1] = cmd_exec->output_pipe[1];
 }
 
-char	*exec_arg(t_node	*node)
+void	end_p_pipe(t_command_exec	*cmd_exec)
 {
-	char	*argv;
-	char	*arg;
-	int		n;
-
-	if (node == NULL || node->kind == RE_DIRECTUIN)
-		return (NULL);
-	argv = calloc(1, exec_argv_len(node) * sizeof(char));
-	arg = argv;
-	while (1)
+	if (cmd_exec->input_pipe[0] != 0)
 	{
-		n = 0;
-		while (node->lhs->val->word[n] != '\0')
-		{
-			*arg = node->lhs->val->word[n];
-			n++;
-			arg++;
-		}
-		if (node->rhs == NULL || node->rhs->kind == RE_DIRECTUIN)
-			break ;
-		*arg = ' ';
-		node = node->rhs;
-		arg++;
+		close(cmd_exec->input_pipe[0]);
+		close(cmd_exec->input_pipe[1]);
 	}
-	return (argv);
 }
 
-int		exec_argv_len(t_node	*node)
-{
-	if (node->kind != ARGUMENT)
-		fatal_error("not ARGUMENT <exec_cmd.c>\n");
-	int	len;
 
-	len = 0;
-	len += strlen(node->lhs->val->word);
-	while (node->rhs != NULL && node->rhs->kind != RE_DIRECTUIN)
+void	prepare_c_pipe(t_command_exec	*cmd_exec)
+{
+	if (cmd_exec->input_pipe[0] != 0)
 	{
-		len++;
-		len += strlen(node->lhs->val->word);
-		node = node->rhs;
+		close(cmd_exec->input_pipe[1]);
+		dup2(cmd_exec->input_pipe[0], STDIN_FILENO);
 	}
-	return (len);
+	if (cmd_exec->output_pipe[0] != 0)
+	{
+		close(cmd_exec->output_pipe[0]);
+		dup2(cmd_exec->output_pipe[1], STDOUT_FILENO);
+	}
 }
 
-char	*exec_search_pash(const char *file)
+void	end_c_pipe(t_command_exec	*cmd_exec)
 {
-	int		n;
-	char	*path;
-	char	*end_p;
-	char	tmp_value[PATH_MAX];
-	char	*re;
-
-	path = getenv("PATH");
-	if (path == NULL)
-		fatal_error("can not get env");
-	bzero(tmp_value,PATH_MAX);
-	end_p = strchr(path, ':');
-	while (end_p != NULL)
+	if (cmd_exec->input_pipe[1] != 0)
 	{
-		n = 0;
-		while(end_p != path)
-			tmp_value[n++] = *path++;
-		strlcat(tmp_value, "/", PATH_MAX);
-		strlcat(tmp_value, file, PATH_MAX);
-		if (access(tmp_value, X_OK) == 0)
-		{
-			re = strdup(tmp_value);
-			return (re);
-		}
-		bzero(tmp_value,PATH_MAX);
-		path++;
-		end_p = strchr(path, ':');
+		close(cmd_exec->input_pipe[0]);
 	}
-	return (NULL);
+	if (cmd_exec->output_pipe[0] != 0)
+	{
+		close(cmd_exec->output_pipe[1]);
+	}
 }
