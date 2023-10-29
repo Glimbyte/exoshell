@@ -6,7 +6,7 @@
 /*   By: mfujimak <mfujimak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/16 21:01:24 by mfujimak          #+#    #+#             */
-/*   Updated: 2023/10/24 00:16:45 by mfujimak         ###   ########.fr       */
+/*   Updated: 2023/10/26 12:42:12 by mfujimak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,8 @@ void	reader_loop(t_shell *command)
 	}
 	if (command->node->kind != SIMPLE_CMD_LINE)
 		fatal_error("not SIMPLE_CMD_LINE <exec_cmd.c>\n");
+	if (command->node->lhs == NULL)
+		return ;
 	exec_scmd(command->node->lhs);
 }
 

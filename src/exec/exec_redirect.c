@@ -6,13 +6,13 @@
 /*   By: mfujimak <mfujimak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/22 20:22:54 by mfujimak          #+#    #+#             */
-/*   Updated: 2023/10/25 16:01:34 by mfujimak         ###   ########.fr       */
+/*   Updated: 2023/10/25 17:13:08 by mfujimak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "shell.h"
 
-t_redirect	*exec_redirect(t_node	*node, t_command_exec	*cmd_exec)
+t_redirect	*exec_redirect(t_node	*node)
 {
 	t_redirect	*redir;
 
@@ -27,9 +27,9 @@ t_redirect	*exec_redirect(t_node	*node, t_command_exec	*cmd_exec)
 		if (redir->kind != RK_HEREDOC)
 			redir->filename = strdup(node->lhs->val->next->word);
 		else
-			redir->filename = heredoc(cmd_exec);
+			redir->filename = heredoc(node->lhs->val->next->word);
 		redir->fd = atoi(node->lhs->val->word);
-		redir->next = exec_redirect(node->rhs, cmd_exec);
+		redir->next = exec_redirect(node->rhs);
 		return (redir);
 	}
 	return (NULL);

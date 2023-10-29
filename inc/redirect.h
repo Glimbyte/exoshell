@@ -6,7 +6,7 @@
 /*   By: mfujimak <mfujimak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/13 02:07:50 by mfujimak          #+#    #+#             */
-/*   Updated: 2023/10/25 16:00:29 by mfujimak         ###   ########.fr       */
+/*   Updated: 2023/10/25 17:13:50 by mfujimak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,3 +36,5 @@ void	close_redirect(int targetfd, t_redirect *redir);
 int		open_redirect_fd(t_redirect *redir);
 
 int	stashfd(int fd);
+
+char *heredoc(char *delimiter);
