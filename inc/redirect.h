@@ -6,7 +6,7 @@
 /*   By: mfujimak <mfujimak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/13 02:07:50 by mfujimak          #+#    #+#             */
-/*   Updated: 2023/10/25 17:13:50 by mfujimak         ###   ########.fr       */
+/*   Updated: 2023/11/02 00:57:49 by mfujimak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ struct s_redirect
 	char			*filename;
 	t_redirect_kind	kind;
 	int				fd;
+	int				heredoc_pipe[2];
 	t_redirect		*next;
 };
 
@@ -37,4 +38,9 @@ int		open_redirect_fd(t_redirect *redir);
 
 int	stashfd(int fd);
 
-char *heredoc(char *delimiter);
+char	*heredoc(char *delimiter);
+void	set_p_heredoc(t_redirect *redir);
+void	set_c_heredoc(t_redirect *redir);
+void	do_p_heredoc(t_redirect *redir);
+void	reset_p_heredoc(t_redirect *redir);
+void	reset_c_heredoc(t_redirect *redir);

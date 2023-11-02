@@ -6,7 +6,7 @@
 /*   By: mfujimak <mfujimak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/22 20:22:54 by mfujimak          #+#    #+#             */
-/*   Updated: 2023/10/25 17:13:08 by mfujimak         ###   ########.fr       */
+/*   Updated: 2023/11/02 03:39:27 by mfujimak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ t_redirect	*exec_redirect(t_node	*node)
 		node = node->rhs;
 	if (node != NULL  && node->lhs->kind == RE_DIRECTUIN)
 		printf("filename : [ %s ]\n", node->lhs->val->next->word);
-	if (node != NULL && node->lhs->kind ==  RE_DIRECTUIN)
+	if (node != NULL && node->lhs->kind == RE_DIRECTUIN)
 	{
 		redir = calloc(1, sizeof(t_redirect));
 		redir->kind = exec_redirect_kind(node->lhs->val);
