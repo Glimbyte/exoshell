@@ -1,27 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   exec_scmd.c                                        :+:      :+:    :+:   */
+/*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mfujimak <mfujimak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/22 17:09:08 by mfujimak          #+#    #+#             */
-/*   Updated: 2023/11/03 12:23:13 by mfujimak         ###   ########.fr       */
+/*   Created: 2023/11/02 23:27:56 by mfujimak          #+#    #+#             */
+/*   Updated: 2023/11/02 23:27:58 by mfujimak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "shell.h"
-
-void	exec_scmd(t_node	*node)
-{
-	if (node == NULL)
-		return ;
-	if (node->kind != SEQUENTIAL_CMD)
-		fatal_error("not SEQUENTIAL_CMD <exec_cmd.c>\n");
-	t_command_exec *cmd_exec;
-
-	cmd_exec = calloc(1, sizeof(t_command_exec));
-	exec_pipe(node->lhs, cmd_exec);
-	if (node->rhs != NULL)
-		exec_scmd(node->rhs);
-}

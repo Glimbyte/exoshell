@@ -6,7 +6,7 @@
 /*   By: mfujimak <mfujimak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/16 21:01:34 by mfujimak          #+#    #+#             */
-/*   Updated: 2023/10/25 16:00:23 by mfujimak         ###   ########.fr       */
+/*   Updated: 2023/11/03 21:16:44 by mfujimak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,19 +27,18 @@
 #include "expand.h"
 #include "exit.h"
 
-
-// char *readline(const char *prompt)
-// void using_history(void)
-// void add_history(const char *string)
-// int read_history(const char *filename)
-// int write_history(const char *filename)
-
 typedef struct struct_shell
 {
 	char	*line;
 	t_token	*tok;
 	t_node	*node;
 }			t_shell;
+
+// char *readline(const char *prompt)
+// void using_history(void)
+// void add_history(const char *string)
+// int read_history(const char *filename)
+// int write_history(const char *filename)
 
 void		shell_init(void);
 void		reader_loop(t_shell *input);

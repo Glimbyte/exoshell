@@ -6,7 +6,7 @@
 /*   By: mfujimak <mfujimak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/16 21:01:24 by mfujimak          #+#    #+#             */
-/*   Updated: 2023/10/26 12:42:12 by mfujimak         ###   ########.fr       */
+/*   Updated: 2023/11/03 21:10:17 by mfujimak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,20 +46,12 @@ void	reader_loop(t_shell *command)
 	while (EOF_Reached == 0)
 	{
 		command->tok = tokenize(command->line);
-		if (command->tok == NULL)
-			break ;
-		token_check(command->tok);
+		token_check(command->tok); //check protocol
 		command->node = parser(command->tok);
-		parser_check( "parser.dot", command->node);
-		if (command->node == NULL)
-			break ;
-		expand(command->node);
+		parser_check( "parser.dot", command->node); //check protpcol
+		expand(command);
 		EOF_Reached = EOF;
 	}
-	if (command->node->kind != SIMPLE_CMD_LINE)
-		fatal_error("not SIMPLE_CMD_LINE <exec_cmd.c>\n");
-	if (command->node->lhs == NULL)
-		return ;
 	exec_scmd(command->node->lhs);
 }
 

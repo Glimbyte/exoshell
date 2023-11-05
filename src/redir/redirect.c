@@ -6,7 +6,7 @@
 /*   By: mfujimak <mfujimak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/13 02:07:13 by mfujimak          #+#    #+#             */
-/*   Updated: 2023/11/02 01:13:56 by mfujimak         ###   ########.fr       */
+/*   Updated: 2023/11/02 17:19:37 by mfujimak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,8 +71,6 @@ int	open_redirect_fd(t_redirect *redir)
 		fd = open(redir->filename, O_CREAT | O_WRONLY | O_TRUNC, 0644);
 	else if (redir->kind == RK_APPEND)
 		fd = open(redir->filename,  O_CREAT | O_WRONLY | O_APPEND, 0644);
-	else if (redir->kind == RK_HEREDOC)
-		Todo("dont open heredoc <redirect.c>");
 	return (fd);
 }
 
