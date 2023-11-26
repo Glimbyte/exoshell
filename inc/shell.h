@@ -6,7 +6,7 @@
 /*   By: mfujimak <mfujimak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/16 21:01:34 by mfujimak          #+#    #+#             */
-/*   Updated: 2023/11/03 21:16:44 by mfujimak         ###   ########.fr       */
+/*   Updated: 2023/11/03 21:27:00 by mfujimak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,5 +42,4 @@ typedef struct struct_shell
 
 void		shell_init(void);
 void		reader_loop(t_shell *input);
-void		reader_command(t_shell *input);
 void		shell_end(void);

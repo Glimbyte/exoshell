@@ -6,7 +6,7 @@
 /*   By: mfujimak <mfujimak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/16 21:01:24 by mfujimak          #+#    #+#             */
-/*   Updated: 2023/11/03 21:10:17 by mfujimak         ###   ########.fr       */
+/*   Updated: 2023/11/10 12:53:11 by mfujimak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,15 +49,10 @@ void	reader_loop(t_shell *command)
 		token_check(command->tok); //check protocol
 		command->node = parser(command->tok);
 		parser_check( "parser.dot", command->node); //check protpcol
-		expand(command);
+		expand(command->node);
 		EOF_Reached = EOF;
 	}
 	exec_scmd(command->node->lhs);
-}
-
-void	reader_command(t_shell *command)
-{
-	(void)command;
 }
 
 void	shell_end(void)
