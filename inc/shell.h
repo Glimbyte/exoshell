@@ -6,7 +6,7 @@
 /*   By: mfujimak <mfujimak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/16 21:01:34 by mfujimak          #+#    #+#             */
-/*   Updated: 2023/11/03 21:27:00 by mfujimak         ###   ########.fr       */
+/*   Updated: 2023/11/26 16:03:20 by mfujimak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@
 #include "redirect.h"
 #include "exec.h"
 #include "expand.h"
+#include "env.h"
 #include "exit.h"
 
 typedef struct struct_shell

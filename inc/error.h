@@ -6,7 +6,7 @@
 /*   By: mfujimak <mfujimak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/06 11:06:17 by mfujimak          #+#    #+#             */
-/*   Updated: 2023/10/11 00:23:24 by mfujimak         ###   ########.fr       */
+/*   Updated: 2023/11/26 14:50:15 by mfujimak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,6 @@
 #include <sys/wait.h>
 
 #include <limits.h>
-#include <bsd/string.h>
 
 
 

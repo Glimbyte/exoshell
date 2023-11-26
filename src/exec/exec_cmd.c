@@ -6,7 +6,7 @@
 /*   By: mfujimak <mfujimak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/24 08:53:20 by mfujimak          #+#    #+#             */
-/*   Updated: 2023/10/24 10:09:48 by mfujimak         ###   ########.fr       */
+/*   Updated: 2023/11/26 15:00:20 by mfujimak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,8 @@ void	exec_cmd(t_node	*node, t_command_exec	*cmd_exec)
 		cmd_exec->path = strdup(cmd_exec->argv[0]);
 	else
 		cmd_exec->path = exec_search_pash(cmd_exec->argv[0]);
-	exec(cmd_exec);
+	if (cmd_exec->path != NULL)
+		exec(cmd_exec);
 }
 
 char	**exec_argv(t_node	*node)

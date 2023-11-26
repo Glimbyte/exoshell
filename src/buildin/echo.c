@@ -6,8 +6,13 @@
 /*   By: mfujimak <mfujimak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 23:27:56 by mfujimak          #+#    #+#             */
-/*   Updated: 2023/11/19 13:01:03 by mfujimak         ###   ########.fr       */
+/*   Updated: 2023/11/26 15:47:08 by mfujimak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "shell.h"
+
+void	buildin_echo(char **argv)
+{
+	
+}
