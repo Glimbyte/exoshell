@@ -6,23 +6,11 @@
 /*   By: mfujimak <mfujimak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/26 15:59:09 by mfujimak          #+#    #+#             */
-/*   Updated: 2023/11/27 13:52:53 by mfujimak         ###   ########.fr       */
+/*   Updated: 2023/11/27 18:38:30 by mfujimak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "shell.h"
-
-t_env_item	*item_new(char *name, char *value)
-{
-	t_env_item	*re;
-
-	re = calloc(sizeof(t_env_item), 1);
-	if (re == NULL)
-		fatal_error("not calloc <env_map.c>");
-	re->name = name;
-	re->value = value;
-	return (re);
-}
 
 t_env_map		*map_new(void)
 {
@@ -89,6 +77,7 @@ int	map_len(t_env_map *map)
 
 t_env_map		*map_init(t_env_map *map, char **env)
 {
+	map->first_item = 0;
 	while (*env)
 	{
 		map_put(map, *env);
@@ -103,35 +92,48 @@ int	map_put(t_env_map *map, char *string)
 	char *name;
 	char *value;
 
+	(void)map;
 	equal = strchr(string, '=');
 	if (equal == NULL)
 	{
 		name = strdup(string);
 		value = NULL;
-		if (name == NULL)
-			fatal_error("not calloc <env_map.c>");
 	}
 	else
 	{
-		name = strndup(string, equal - string + 1);
-		if (name == NULL)
-			fatal_error("not calloc <env_map.c>");
+		name = strndup(string, equal - string);
 		value = strdup(equal + 1);
-		if (value == NULL)
-			fatal_error("not calloc <env_map.c>");
 	}
 	map_set(map, name, value);
+	map_view(map);
 	return (1);
 }
 
+t_env_item	*item_set(char *name, char *value)
+{
+	t_env_item	*new_item;
+
+	new_item = calloc(sizeof(t_env_item *), 1);
+	new_item->name = name;
+	new_item->value = value;
+	new_item->next = NULL;
+	return (new_item);
+}
+
+
 int	map_set(t_env_map *map, char *name, char *value)
 {
-	t_env_item	*item;
+	t_env_item	*tmp_item;
 
-	item = map->first_item;
-	while (item->next != NULL)
-		item = item->next;
-	item->next = item_new(name, value);
+	tmp_item = map->first_item;
+	if (tmp_item)
+	{
+		while (tmp_item->next != NULL)
+			tmp_item = tmp_item->next;
+		tmp_item->next = item_set(name, value);
+	}
+	else
+		map->first_item = item_set(name, value);
 	return (1);
 }
 
@@ -164,7 +166,7 @@ void	map_view(t_env_map *map)
 	tmp = map->first_item;
 	while (tmp)
 	{
-		printf ("name	%s, value	%s \n", tmp->name, tmp->value);
+		printf ("name	%s value	%s \n", tmp->name, tmp->value);
 		tmp = tmp->next;
 	}
 }
