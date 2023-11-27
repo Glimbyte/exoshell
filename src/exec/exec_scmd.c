@@ -6,13 +6,13 @@
 /*   By: mfujimak <mfujimak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/22 17:09:08 by mfujimak          #+#    #+#             */
-/*   Updated: 2023/11/03 12:23:13 by mfujimak         ###   ########.fr       */
+/*   Updated: 2023/11/27 13:46:45 by mfujimak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "shell.h"
 
-void	exec_scmd(t_node	*node)
+void	exec_scmd(t_node *node, t_env_map *env_map)
 {
 	if (node == NULL)
 		return ;
@@ -23,5 +23,5 @@ void	exec_scmd(t_node	*node)
 	cmd_exec = calloc(1, sizeof(t_command_exec));
 	exec_pipe(node->lhs, cmd_exec);
 	if (node->rhs != NULL)
-		exec_scmd(node->rhs);
+		exec_scmd(node->rhs, env_map);
 }

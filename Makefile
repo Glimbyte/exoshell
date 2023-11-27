@@ -6,7 +6,7 @@
 #    By: mfujimak <mfujimak@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/09/14 18:00:19 by mfujimak          #+#    #+#              #
-#    Updated: 2023/11/27 13:10:06 by mfujimak         ###   ########.fr        #
+#    Updated: 2023/11/27 13:55:18 by mfujimak         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -54,10 +54,12 @@ HEADER := $(shell find $(HEADER_DIR) -name \*.h)
 
 .PHONY: all clean fclean re test
 
-all :$(NAME)
+all :dir $(NAME) dot
+
+dir:
+	mkdir -p $(OBJ_DIR)
 
 $(OBJ_DIR)/%.o: %.c
-	mkdir -p $(OBJ_DIR)
 	$(CC) $(CFLAGS) $(CPPFLAGS) -c $< -o $@
 
 $(NAME): $(OBJ)

@@ -6,7 +6,7 @@
 /*   By: mfujimak <mfujimak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/03 17:03:46 by mfujimak          #+#    #+#             */
-/*   Updated: 2023/10/25 16:50:45 by mfujimak         ###   ########.fr       */
+/*   Updated: 2023/11/27 13:30:29 by mfujimak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ struct s_command_exec
 	t_command_exec	*next;
 };
 
-void	exec_scmd(t_node	*node);
+void	exec_scmd(t_node	*node, t_env_map *env_map);
 void	exec_pipe(t_node	*node, t_command_exec	*cmd_exec);
 void	prepare_p_pipe(t_command_exec	*cmd_exec);
 void	end_p_pipe(t_command_exec	*cmd_exec);

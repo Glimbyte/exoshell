@@ -6,24 +6,27 @@
 /*   By: mfujimak <mfujimak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/16 21:01:24 by mfujimak          #+#    #+#             */
-/*   Updated: 2023/11/27 13:28:04 by mfujimak         ###   ########.fr       */
+/*   Updated: 2023/11/27 13:50:46 by mfujimak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "shell.h"
 
-void	shell_init(void)
+void	shell_init(t_shell *command)
 {
+	extern char	**environ;
+
 	rl_outstream = stderr;
 	using_history();
 	read_history(".minishell_history");
+	map_init(&command->env_map, environ);
 }
 
 int	main(void)
 {
 	t_shell	command;
 
-	shell_init();
+	shell_init(&command);
 	while (1)
 	{
 		command.line = readline("shell$ ");
@@ -52,7 +55,7 @@ void	reader_loop(t_shell *command)
 		expand(command->node);
 		EOF_Reached = EOF;
 	}
-	exec_scmd(command->node->lhs);
+	exec_scmd(command->node->lhs, &command->env_map);
 }
 
 void	shell_end(void)

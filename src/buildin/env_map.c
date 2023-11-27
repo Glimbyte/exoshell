@@ -6,7 +6,7 @@
 /*   By: mfujimak <mfujimak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/26 15:59:09 by mfujimak          #+#    #+#             */
-/*   Updated: 2023/11/27 13:27:40 by mfujimak         ###   ########.fr       */
+/*   Updated: 2023/11/27 13:52:53 by mfujimak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,7 @@ int	map_len(t_env_map *map)
 	return (n);
 }
 
-t_env_map		*map_init(char **env, t_env_map *map)
+t_env_map		*map_init(t_env_map *map, char **env)
 {
 	while (*env)
 	{
@@ -155,4 +155,16 @@ int	map_unset(t_env_map *map, char *name)
 		item = item->next;
 	}
 	return (1);
+}
+
+void	map_view(t_env_map *map)
+{
+	t_env_item *tmp;
+
+	tmp = map->first_item;
+	while (tmp)
+	{
+		printf ("name	%s, value	%s \n", tmp->name, tmp->value);
+		tmp = tmp->next;
+	}
 }
