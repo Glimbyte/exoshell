@@ -6,7 +6,7 @@
 #    By: mfujimak <mfujimak@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/09/14 18:00:19 by mfujimak          #+#    #+#              #
-#    Updated: 2023/11/26 18:37:06 by mfujimak         ###   ########.fr        #
+#    Updated: 2023/11/27 13:10:06 by mfujimak         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -31,7 +31,7 @@ SRC_DIRS ?= ./src
 LIB_DIR ?= ./lib
 HEADER_DIR ?= ./inc
 
-VPATH = src lib src/exec src/lexer src/expand src/parser src/cmd src/redir
+VPATH = src lib src/exec src/lexer src/expand src/parser src/cmd src/redir src/buildin
 
 SRC := shell.c
 
@@ -46,6 +46,8 @@ SRC += redirect.c heredoc.c
 SRC += parser.c
 
 SRC += error.c
+
+SRC += env_map.c
 
 OBJ := $(SRC:%.c=$(OBJ_DIR)/%.o)
 HEADER := $(shell find $(HEADER_DIR) -name \*.h)

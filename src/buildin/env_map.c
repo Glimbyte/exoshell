@@ -6,7 +6,7 @@
 /*   By: mfujimak <mfujimak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/26 15:59:09 by mfujimak          #+#    #+#             */
-/*   Updated: 2023/11/26 18:35:35 by mfujimak         ###   ########.fr       */
+/*   Updated: 2023/11/27 13:27:40 by mfujimak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ t_env_item	*item_new(char *name, char *value)
 	if (re == NULL)
 		fatal_error("not calloc <env_map.c>");
 	re->name = name;
-	re->value = vslue;
+	re->value = value;
 	return (re);
 }
 
@@ -28,18 +28,18 @@ t_env_map		*map_new(void)
 {
 	t_env_map	*re;
 
-	re = calloc(sizeof(t_env_map), 1);
+	re = calloc(sizeof(t_env_map *), 1);
 	if (re)
 		fatal_error("cant malloc <env_map.c>");
 	return (re);
 }
 
-char	*map_get(t_map *map, char *name);
+char	*map_get(t_env_map *map, char *name)
 {
 	char	*re;
-	t_env_item	item;
+	t_env_item	*item;
 
-	item = map->first_name ;
+	item = map->first_item;
 	re = NULL;
 	while (item != NULL)
 	{
@@ -53,13 +53,13 @@ char	*map_get(t_map *map, char *name);
 	return (re);
 }
 
-char	**get_env(t_map *map);
+char	**get_env(t_env_map *map)
 {
 	char	**re;
 	int		n;
-	t_env_item	item;
+	t_env_item	*item;
 
-	item = map->first_name;
+	item = map->first_item;
 	re = calloc(sizeof(char *), map_len(map));
 	n = 0;
 	while (item != NULL)
@@ -72,10 +72,10 @@ char	**get_env(t_map *map);
 	return (re);
 }
 
-int	map_len(t_map *map)
+int	map_len(t_env_map *map)
 {
 	int	n;
-	t_env_item	item;
+	t_env_item	*item;
 
 	item = map->first_item;
 	n = 0;
@@ -94,16 +94,16 @@ t_env_map		*map_init(char **env, t_env_map *map)
 		map_put(map, *env);
 		env++;
 	}
+	return (map);
 }
 
-int	map_put(t_map *map, char *string)
+int	map_put(t_env_map *map, char *string)
 {
-	int	equal;
+	char *equal;
 	char *name;
 	char *value;
 
-	t_env_item	*new_item;
-	equal = strchr(string, "=");
+	equal = strchr(string, '=');
 	if (equal == NULL)
 	{
 		name = strdup(string);
@@ -124,10 +124,10 @@ int	map_put(t_map *map, char *string)
 	return (1);
 }
 
-int	map_set(t_map *map, char *name, char *value)
+int	map_set(t_env_map *map, char *name, char *value)
 {
-	t_env_item	item;
-	
+	t_env_item	*item;
+
 	item = map->first_item;
 	while (item->next != NULL)
 		item = item->next;
@@ -135,13 +135,12 @@ int	map_set(t_map *map, char *name, char *value)
 	return (1);
 }
 
-int	map_unset(t_map *map, char *name)
+int	map_unset(t_env_map *map, char *name)
 {
-	t_env_item	item;
-	t_env_item	free_item;
+	t_env_item	*item;
+	t_env_item	*free_item;
 
-	item = map->first_name ;
-	re = NULL;
+	item = map->first_item;
 	while (item->next != NULL)
 	{
 		if (strncmp(item->next->name, name, strlen(item->next->name)) == 0)
