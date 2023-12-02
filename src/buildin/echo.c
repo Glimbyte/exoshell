@@ -14,5 +14,5 @@
 
 int	buildin_echo(t_command_exec	*cmd_exec)
 {
-	
+	return (1);
 }
