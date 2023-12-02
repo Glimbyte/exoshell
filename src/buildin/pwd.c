@@ -6,13 +6,13 @@
 /*   By: mfujimak <mfujimak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 23:28:14 by mfujimak          #+#    #+#             */
-/*   Updated: 2023/11/26 14:46:01 by mfujimak         ###   ########.fr       */
+/*   Updated: 2023/12/02 14:45:46 by mfujimak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "shell.h"
 
-void	buildin_pwd()
+int	buildin_pwd(t_command_exec	*cmd_exec)
 {
-
+	return (1);
 }

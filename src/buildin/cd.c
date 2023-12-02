@@ -6,13 +6,14 @@
 /*   By: mfujimak <mfujimak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 23:27:48 by mfujimak          #+#    #+#             */
-/*   Updated: 2023/11/26 14:45:06 by mfujimak         ###   ########.fr       */
+/*   Updated: 2023/12/02 14:50:27 by mfujimak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "shell.h"
 
-void	buildin_cd()
+int	buildin_cd(t_command_exec	*cmd_exec)
 {
-
+	
+	return (1);
 }

@@ -6,7 +6,7 @@
 #    By: mfujimak <mfujimak@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/09/14 18:00:19 by mfujimak          #+#    #+#              #
-#    Updated: 2023/11/27 13:55:18 by mfujimak         ###   ########.fr        #
+#    Updated: 2023/12/02 13:45:27 by mfujimak         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -31,7 +31,7 @@ SRC_DIRS ?= ./src
 LIB_DIR ?= ./lib
 HEADER_DIR ?= ./inc
 
-VPATH = src lib src/exec src/lexer src/expand src/parser src/cmd src/redir src/buildin
+VPATH = src lib src/exec src/lexer src/expand src/parser src/cmd src/redir src/buildin src/env_map
 
 SRC := shell.c
 

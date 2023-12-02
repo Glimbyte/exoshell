@@ -6,7 +6,7 @@
 /*   By: mfujimak <mfujimak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/03 13:52:23 by mfujimak          #+#    #+#             */
-/*   Updated: 2023/10/11 23:00:05 by mfujimak         ###   ########.fr       */
+/*   Updated: 2023/12/02 14:17:08 by mfujimak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,3 +34,30 @@ char *ft_strextract(int extract, char *s)
 	}
 	return (re_s);
 }
+
+char	*ft_strjoin(char const *s1, char const *s2)
+{
+	char	*s;
+	size_t	n;
+
+	if (s1 == 0 || s2 == 0)
+		return (0);
+	s = (char *)malloc(strlen(s1) + strlen(s2) + 1);
+	if (s == 0)
+		return (0);
+	n = 0;
+	while (strlen(s1) > n)
+	{
+		s[n] = s1[n];
+		n++;
+	}
+	n = 0;
+	while (strlen(s2) > n)
+	{
+		s[strlen(s1) + n] = s2[n];
+		n++;
+	}
+	s[strlen(s1) + strlen(s2)] = 0;
+	return (s);
+}
+

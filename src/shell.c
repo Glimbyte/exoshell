@@ -6,7 +6,7 @@
 /*   By: mfujimak <mfujimak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/16 21:01:24 by mfujimak          #+#    #+#             */
-/*   Updated: 2023/11/27 13:50:46 by mfujimak         ###   ########.fr       */
+/*   Updated: 2023/12/02 14:21:53 by mfujimak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@ void	shell_init(t_shell *command)
 	using_history();
 	read_history(".minishell_history");
 	map_init(&command->env_map, environ);
+	map_view(&command->env_map);
 }
 
 int	main(void)

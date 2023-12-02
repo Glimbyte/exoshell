@@ -6,7 +6,7 @@
 /*   By: mfujimak <mfujimak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/26 15:59:09 by mfujimak          #+#    #+#             */
-/*   Updated: 2023/11/27 18:38:30 by mfujimak         ###   ########.fr       */
+/*   Updated: 2023/12/02 14:27:43 by mfujimak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,15 +48,16 @@ char	**get_env(t_env_map *map)
 	t_env_item	*item;
 
 	item = map->first_item;
-	re = calloc(sizeof(char *), map_len(map));
+	re = calloc(sizeof(char *), map_len(map) + 1);
 	n = 0;
-	while (item != NULL)
+	while (item)
 	{
-		re[n] = strcat(item->name , "=");
-		re[n] = strcat(re[n], item->value);
+		re[n] = ft_strjoin(item->name , "=");
+		re[n] = ft_strjoin(re[n], item->value);
 		n++;
 		item = item->next;
 	}
+	re[n] = 0;
 	return (re);
 }
 
@@ -67,7 +68,7 @@ int	map_len(t_env_map *map)
 
 	item = map->first_item;
 	n = 0;
-	while (item != NULL)
+	while (item)
 	{
 		n++;
 		item = item->next;
@@ -105,7 +106,6 @@ int	map_put(t_env_map *map, char *string)
 		value = strdup(equal + 1);
 	}
 	map_set(map, name, value);
-	map_view(map);
 	return (1);
 }
 
@@ -113,7 +113,7 @@ t_env_item	*item_set(char *name, char *value)
 {
 	t_env_item	*new_item;
 
-	new_item = calloc(sizeof(t_env_item *), 1);
+	new_item = calloc(sizeof(t_env_item), 1);
 	new_item->name = name;
 	new_item->value = value;
 	new_item->next = NULL;
@@ -128,7 +128,7 @@ int	map_set(t_env_map *map, char *name, char *value)
 	tmp_item = map->first_item;
 	if (tmp_item)
 	{
-		while (tmp_item->next != NULL)
+		while (tmp_item->next)
 			tmp_item = tmp_item->next;
 		tmp_item->next = item_set(name, value);
 	}
@@ -166,7 +166,10 @@ void	map_view(t_env_map *map)
 	tmp = map->first_item;
 	while (tmp)
 	{
-		printf ("name	%s value	%s \n", tmp->name, tmp->value);
+		printf ("---------------------------------------------\n");
+		printf ("name	%s \n", tmp->name);
+		printf ("value	%s \n", tmp->value);
+		printf ("---------------------------------------------\n");
 		tmp = tmp->next;
 	}
 }

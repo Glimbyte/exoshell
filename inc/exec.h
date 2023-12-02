@@ -6,7 +6,7 @@
 /*   By: mfujimak <mfujimak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/03 17:03:46 by mfujimak          #+#    #+#             */
-/*   Updated: 2023/11/27 13:30:29 by mfujimak         ###   ########.fr       */
+/*   Updated: 2023/12/02 14:21:05 by mfujimak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@ typedef struct s_command_exec t_command_exec;
 struct s_command_exec
 {
 	t_redirect	*refirection;
+	t_env_map	*map;
 	char		**argv;
 	char		*path;
 	pid_t		pid;
