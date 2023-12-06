@@ -6,7 +6,7 @@
 /*   By: mfujimak <mfujimak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/24 08:53:20 by mfujimak          #+#    #+#             */
-/*   Updated: 2023/12/02 14:48:56 by mfujimak         ###   ########.fr       */
+/*   Updated: 2023/12/05 20:30:13 by mfujimak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,9 +24,13 @@ void	exec_cmd(t_node	*node, t_command_exec	*cmd_exec)
 	if(strchr(cmd_exec->argv[0], '/'))
 		cmd_exec->path = strdup(cmd_exec->argv[0]);
 	else
-		cmd_exec->path = exec_search_pash(cmd_exec->argv[0]);
+		cmd_exec->path = exec_search_pash(cmd_exec->argv[0], cmd_exec->map);
 	if (cmd_exec->path != NULL)
 		exec(cmd_exec);
+	else if (buildin_checker(cmd_exec->argv[0]))
+		buildin_cmd(t_command_exec	*cmd_exec);
+	else
+		printf("cant find path <exec_pipe.c>\n");
 }
 
 char	**exec_argv(t_node	*node)
@@ -90,15 +94,14 @@ int		exec_argv_len(t_node	*node)
 	return (len);
 }
 
-char	*exec_search_pash(const char *file)
+char	*exec_search_pash(const char *file, t_env_map *map)
 {
 	int		n;
 	char	*path;
 	char	*end_p;
 	char	tmp_value[PATH_MAX];
-	char	*re;
 
-	path = getenv("PATH");
+	path = get_env(map, "PATH");
 	if (path == NULL)
 		fatal_error("can not get env");
 	bzero(tmp_value,PATH_MAX);
@@ -111,14 +114,10 @@ char	*exec_search_pash(const char *file)
 		strlcat(tmp_value, "/", PATH_MAX);
 		strlcat(tmp_value, file, PATH_MAX);
 		if (access(tmp_value, X_OK) == 0)
-		{
-			re = strdup(tmp_value);
-			return (re);
-		}
+			return (strdup(tmp_value));
 		bzero(tmp_value,PATH_MAX);
 		path++;
 		end_p = strchr(path, ':');
 	}
-	printf("cant find path <exec_pipe.c>\n");
 	return (NULL);
 }
