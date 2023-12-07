@@ -6,15 +6,15 @@
 /*   By: mfujimak <mfujimak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/16 21:01:34 by mfujimak          #+#    #+#             */
-/*   Updated: 2023/11/27 17:49:49 by mfujimak         ###   ########.fr       */
+/*   Updated: 2023/12/06 18:39:38 by mfujimak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <readline/history.h>
-#include <readline/readline.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
+#include <readline/history.h>
+#include <readline/readline.h>
 //#include <bsd/string.h>
 
 //exec.c
@@ -27,6 +27,7 @@
 #include "redirect.h"
 #include "exec.h"
 #include "expand.h"
+#include "buildin.h"
 
 typedef struct struct_shell
 {

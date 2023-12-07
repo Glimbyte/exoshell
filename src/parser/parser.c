@@ -6,7 +6,7 @@
 /*   By: mfujimak <mfujimak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/11 23:35:52 by mfujimak          #+#    #+#             */
-/*   Updated: 2023/10/22 18:29:33 by mfujimak         ###   ########.fr       */
+/*   Updated: 2023/12/06 18:40:44 by mfujimak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ t_node	*p_cmd_line()
 
 	if (tok->kind == TK_EOF)
 		return (new_node(SIMPLE_CMD_LINE, NULL, NULL, NULL));
-	node = p_sequential_cmd(tok);
+	node = p_sequential_cmd();
 	if (tok->kind != TK_EOF)
 	{
 		if (p_expect(tok, TK_OP, ";"))

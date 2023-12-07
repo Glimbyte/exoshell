@@ -6,7 +6,7 @@
 /*   By: mfujimak <mfujimak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/26 15:59:09 by mfujimak          #+#    #+#             */
-/*   Updated: 2023/12/05 20:27:30 by mfujimak         ###   ########.fr       */
+/*   Updated: 2023/12/06 20:12:23 by mfujimak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,8 +52,13 @@ char	**get_full_env(t_env_map *map)
 	n = 0;
 	while (item)
 	{
-		re[n] = ft_strjoin(item->name , "=");
-		re[n] = ft_strjoin(re[n], item->value);
+		if (item->value)
+		{
+			re[n] = ft_strjoin(item->name , "=");
+			re[n] = ft_strjoin(re[n], item->value);
+		}
+		else
+			re[n] = strdup(item->name);
 		n++;
 		item = item->next;
 	}
@@ -156,6 +161,8 @@ int	map_unset(t_env_map *map, char *name)
 		}
 		item = item->next;
 	}
+	if (item->next == NULL)
+		return (0);
 	return (1);
 }
 
