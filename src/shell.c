@@ -6,7 +6,7 @@
 /*   By: mfujimak <mfujimak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/16 21:01:24 by mfujimak          #+#    #+#             */
-/*   Updated: 2023/12/02 14:21:53 by mfujimak         ###   ########.fr       */
+/*   Updated: 2023/12/08 10:53:01 by mfujimak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,15 +62,4 @@ void	reader_loop(t_shell *command)
 void	shell_end(void)
 {
 	write_history(".minishell_history");
-}
-
-#include <semaphore.h>
-#include <pthread.h>
-#include <netdb.h>
-#include <time.h>
-#include <string.h>
-
-__attribute__((destructor))
-static void destructor() {
-    system("leaks -q a.out");
 }

@@ -6,7 +6,7 @@
 /*   By: mfujimak <mfujimak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/16 21:01:34 by mfujimak          #+#    #+#             */
-/*   Updated: 2023/12/06 18:39:38 by mfujimak         ###   ########.fr       */
+/*   Updated: 2023/12/07 13:35:15 by mfujimak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 #include <unistd.h>
 #include <readline/history.h>
 #include <readline/readline.h>
-//#include <bsd/string.h>
+// #include <bsd/string.h>
 
 //exec.c
 #include "ft_subbool.h"
