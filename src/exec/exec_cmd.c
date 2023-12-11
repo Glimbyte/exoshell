@@ -6,7 +6,7 @@
 /*   By: mfujimak <mfujimak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/24 08:53:20 by mfujimak          #+#    #+#             */
-/*   Updated: 2023/12/06 19:24:32 by mfujimak         ###   ########.fr       */
+/*   Updated: 2023/12/11 13:15:02 by mfujimak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void	exec_cmd(t_node	*node, t_command_exec	*cmd_exec)
 	if (cmd_exec->refirection != NULL)
 		exec_red_show(cmd_exec->refirection);
 	if (buildin_checker(cmd_exec->argv[0]))
-		buildin_cmd(cmd_exec);
+		exec_buildin(cmd_exec);
 	else
 	{
 		if(strchr(cmd_exec->argv[0], '/'))

@@ -6,7 +6,7 @@
 /*   By: mfujimak <mfujimak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/11 14:45:03 by mfujimak          #+#    #+#             */
-/*   Updated: 2023/11/03 21:20:14 by mfujimak         ###   ########.fr       */
+/*   Updated: 2023/12/11 13:16:14 by mfujimak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,11 @@
 
 t_token *expand(t_node *node)
 {
-	(void)node;
-	return (NULL);
+	if (node->rhs != NULL)
+		expand(node->rhs);
+	if (node->lhs != NULL)
+		expand(node->lhs);
+	return (0);
 }
 
 void	quote_removal(t_token *tok)

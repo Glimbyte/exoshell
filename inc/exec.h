@@ -6,7 +6,7 @@
 /*   By: mfujimak <mfujimak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/03 17:03:46 by mfujimak          #+#    #+#             */
-/*   Updated: 2023/12/06 19:01:06 by mfujimak         ###   ########.fr       */
+/*   Updated: 2023/12/11 13:12:25 by mfujimak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ char	**exec_arg(t_node	*node);
 int		exec_argv_len(t_node	*node);
 char	*exec_search_pash(const char *file, t_env_map *map);
 int		exec(t_command_exec	*cmd_exec);
+int		exec_buildin(t_command_exec	*cmd_exec);
 
 t_redirect	*exec_redirect(t_node	*node);
 t_redirect_kind	exec_redirect_kind(t_token *tok);

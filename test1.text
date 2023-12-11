@@ -1,0 +1,17 @@
+.
+..
+.git
+.vscode
+Makefile
+README.md
+doc
+inc
+lib
+minishell
+obj
+parser.dot
+parser.png
+src
+test
+test1.text
+test2.text

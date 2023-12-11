@@ -6,7 +6,7 @@
 /*   By: mfujimak <mfujimak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/26 15:59:09 by mfujimak          #+#    #+#             */
-/*   Updated: 2023/12/06 20:12:23 by mfujimak         ###   ########.fr       */
+/*   Updated: 2023/12/11 12:44:14 by mfujimak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,6 +131,13 @@ int	map_set(t_env_map *map, char *name, char *value)
 	t_env_item	*tmp_item;
 
 	tmp_item = map->first_item;
+	if (name == NULL)
+		return (0);
+	if (value == NULL)
+	{
+		free (name);
+		return (0);
+	}
 	if (tmp_item)
 	{
 		while (tmp_item->next)
@@ -153,7 +160,7 @@ int	map_unset(t_env_map *map, char *name)
 		if (strncmp(item->next->name, name, strlen(item->next->name)) == 0)
 		{
 			free_item = item->next;
-			item = item->next->next;
+			item->next = item->next->next;
 			free(free_item->name);
 			free(free_item->value);
 			free(free_item);
