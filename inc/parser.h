@@ -6,7 +6,7 @@
 /*   By: mfujimak <mfujimak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/11 23:40:20 by mfujimak          #+#    #+#             */
-/*   Updated: 2023/10/22 13:05:42 by mfujimak         ###   ########.fr       */
+/*   Updated: 2023/12/18 13:32:43 by mfujimak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,10 @@ t_node	*p_command();
 t_node	*p_arguments();
 t_node	*p_string();
 t_node	*p_redirection();
+
+void	*parser_error(int error, t_node *node, t_token *token_head);
+void	parser_free(t_node *node);
+void	node_free(t_node *node);
 
 void	parser_check(char *filename, t_node *node);
 void	node_check(FILE *outputfile ,t_node *node);

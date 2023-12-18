@@ -6,7 +6,7 @@
 /*   By: mfujimak <mfujimak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/16 21:01:24 by mfujimak          #+#    #+#             */
-/*   Updated: 2023/12/08 10:53:01 by mfujimak         ###   ########.fr       */
+/*   Updated: 2023/12/18 13:42:59 by mfujimak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,14 +49,15 @@ void	reader_loop(t_shell *command)
 	EOF_Reached = 0;
 	while (EOF_Reached == 0)
 	{
-		command->tok = tokenize(command->line);
+		command->tok = tokenize(command->line); //malloc OK
 		token_check(command->tok); //check protocol
-		command->node = parser(command->tok);
+		command->node = parser(command->tok); //malloc OK
 		parser_check( "parser.dot", command->node); //check protpcol
 		expand(command->node);
 		EOF_Reached = EOF;
 	}
-	exec_scmd(command->node->lhs, &command->env_map);
+	if (command->node != NULL)
+		exec_scmd(command->node, &command->env_map);
 }
 
 void	shell_end(void)

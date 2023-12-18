@@ -6,7 +6,7 @@
 /*   By: mfujimak <mfujimak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/03 17:03:46 by mfujimak          #+#    #+#             */
-/*   Updated: 2023/12/11 13:12:25 by mfujimak         ###   ########.fr       */
+/*   Updated: 2023/12/18 13:32:11 by mfujimak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@ struct s_command_exec
 {
 	t_redirect	*refirection;
 	t_env_map	*map;
+	t_node		*node;
 	char		**argv;
 	char		*path;
 	pid_t		pid;
@@ -41,3 +42,5 @@ t_redirect	*exec_redirect(t_node	*node);
 t_redirect_kind	exec_redirect_kind(t_token *tok);
 
 void	exec_red_show(t_redirect	*redir);
+void	cmd_free(t_command_exec *cmd_exec);
+void	scmd_free(t_command_exec *cmd_exec);

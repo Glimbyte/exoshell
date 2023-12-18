@@ -6,7 +6,7 @@
 /*   By: mfujimak <mfujimak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/03 22:23:12 by mfujimak          #+#    #+#             */
-/*   Updated: 2023/10/22 11:50:21 by mfujimak         ###   ########.fr       */
+/*   Updated: 2023/12/13 12:46:47 by mfujimak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,11 +71,12 @@ t_token	*tokenize(const char *line)
 			line += control_op(op_len, cur, line);
 		else if (is_word(*line))
 			line += word(cur, line);
-		cur = cur->next;
+		if (cur->next)
+			cur = cur->next;
 		if (tokenize_error(head.next))
 			return (NULL);
 	}
-	new_token( TK_EOF, cur, NULL);
+	new_token(TK_EOF, cur, NULL);
 	return (head.next);
 }
 
@@ -157,7 +158,7 @@ t_token	*new_token(t_token_kind kind,t_token *cur, char *word)
 {
 	t_token *new_token;
 
-	new_token = calloc( 1, sizeof(t_token));
+	new_token = calloc(1, sizeof(t_token));
 	if (new_token == NULL)
 		fatal_error("can not make new_token <token.c>");
 	cur->next = new_token;

@@ -6,7 +6,7 @@
 /*   By: mfujimak <mfujimak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/22 20:22:54 by mfujimak          #+#    #+#             */
-/*   Updated: 2023/12/11 11:07:31 by mfujimak         ###   ########.fr       */
+/*   Updated: 2023/12/18 11:40:29 by mfujimak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,4 +62,15 @@ void	exec_red_show(t_redirect	*redir)
 	printf ("fd		: %d\n", redir->fd);
 	if (redir->next != NULL)
 		exec_red_show(redir->next);
+}
+
+void	redirect_free(t_redirect	*redir)
+{
+	if (redir == NULL)
+		return ;
+	if (redir->next)
+		redirect_free(redir->next);
+	if (redir->filename)
+		free(redir->filename);
+	free(redir);
 }

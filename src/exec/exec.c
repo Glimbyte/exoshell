@@ -6,7 +6,7 @@
 /*   By: mfujimak <mfujimak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/03 15:37:02 by mfujimak          #+#    #+#             */
-/*   Updated: 2023/12/11 13:20:26 by mfujimak         ###   ########.fr       */
+/*   Updated: 2023/12/13 09:23:09 by mfujimak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,8 +37,13 @@ int	exec(t_command_exec	*cmd_exec)
 
 int	exec_buildin(t_command_exec	*cmd_exec)
 {
+	set_p_heredoc(cmd_exec->refirection);
+	prepare_c_pipe(cmd_exec);
 	set_redirect(cmd_exec->refirection);
+	set_c_heredoc(cmd_exec->refirection);
 	buildin_cmd(cmd_exec);
+	reset_c_heredoc(cmd_exec->refirection);
 	reset_redirect(cmd_exec->refirection);
+	end_p_pipe(cmd_exec);
 	return (0);
 }

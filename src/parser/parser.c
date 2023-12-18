@@ -6,7 +6,7 @@
 /*   By: mfujimak <mfujimak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/11 23:35:52 by mfujimak          #+#    #+#             */
-/*   Updated: 2023/12/06 18:40:44 by mfujimak         ###   ########.fr       */
+/*   Updated: 2023/12/18 11:17:17 by mfujimak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,14 +61,21 @@ enum e_node_kind
 */
 
 #include "shell.h"
+
 t_token	*tok;
+int	parser_syntax_error;
 
 t_node	*parser(t_token *token_head)
 {
 	t_node	*head;
 
+	if (token_head == NULL)
+		return (NULL);
 	tok = token_head;
+	parser_syntax_error = 0;
 	head = p_cmd_line();
+	if (parser_syntax_error != 0)
+		return (parser_error(parser_syntax_error, head, token_head));
 	return (head);
 }
 
@@ -166,7 +173,7 @@ t_node	*p_string()
 	t_node	*node;
 
 	if (tok->kind != TK_WORD)
-		Todo("Grammary error <Parser error>\n");
+		parser_syntax_error = 1;
 	node = new_node(STRING, NULL, NULL, tok);
 	tok = tok->next;
 	return (node);
@@ -200,7 +207,7 @@ t_node	*new_node(t_node_kind kind, t_node *lhs, t_node *rhs, t_token *val)
 
 	new_node = calloc(1,sizeof(t_node));
 	if (new_node == NULL)
-		fatal_error("cant calloc <paeser.c>");
+		fatal_error("cant calloc <paeser.c>\n");
 	new_node->kind = kind;
 	new_node->lhs = lhs;
 	new_node->rhs = rhs;
@@ -241,8 +248,53 @@ enum e_node_kind
 
 */
 
+/*
+typedef struct s_node t_node;
+struct s_node
+{
+	t_node_kind	kind;
+	t_node		*rhs;
+	t_node		*lhs;
+	t_token		*val;
+};
+*/
+
+void	*parser_error(int error, t_node *node, t_token *token_head)
+{
+	if (error == 1)
+		printf("Grammary error <Parser error>\n");
+	parser_free(node);
+	token_free(token_head);
+	return (NULL);
+}
+
+void	parser_free(t_node *node)
+{
+	if (node->rhs)
+		parser_free(node->rhs);
+	if (node->lhs)
+		parser_free(node->lhs);
+	if (node)
+		free(node);
+}
+
+void	node_free(t_node *node)
+{
+	if (node->rhs)
+		parser_free(node->rhs);
+	if (node->lhs)
+		parser_free(node->lhs);
+	if (node->val)
+		free(node->val);
+	if (node)
+		free(node);
+}
+
+
 void	node_check(FILE *outputfile ,t_node *node)
 {
+	if (node == NULL)
+		return ;
 	if (node->kind == SIMPLE_CMD_LINE)
 		fprintf(outputfile, "	NODE_%p [label=\"%s\\n\"];\n", node, "SIMPLE_CMD_LINE");
 	else if (node->kind == RE_DIRECTUIN)
